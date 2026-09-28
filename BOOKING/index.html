@@ -1,1383 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Andanian's Hotel · Pangasinan</title>
-<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=DM+Serif+Display:ital@0;1&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Andanian&#39;s Hotel · Booking System (Copy)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/*=== RESET & ROOT ===*/
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --deep:#0a1628;--navy:#112240;--navy2:#1b2f4a;
-  --teal:#0d7377;--teal2:#14a085;--teal3:#1abc9c;
-  --gold:#e8a020;--gold2:#f0b840;--gold3:#ffd166;
-  --peach:#ff6b6b;--peach2:#ff8e8e;
-  --sand:#fef3e2;--sand2:#fde8c0;--sand3:#f5d89a;
-  --cream:#f9f6f0;--white:#ffffff;
-  --text:#1a2332;--text2:#344563;--muted:#6b7c93;--muted2:#9aabbd;
-  --border:rgba(13,115,119,0.15);--border2:rgba(13,115,119,0.28);
-  --glass:rgba(255,255,255,0.08);--glass2:rgba(255,255,255,0.14);
-  --success:#00b894;--danger:#e17055;
-  --r:18px;--r-sm:12px;--r-xs:8px;
-  --tab:70px;--shadow:0 4px 24px rgba(10,22,40,0.12);--shadow2:0 8px 40px rgba(10,22,40,0.18);
-}
-html{-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
-body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;position:relative}
-
-/*=== SPLASH ===*/
-#splash{position:fixed;inset:0;background:var(--deep);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,transform .6s}
-#splash.hide{opacity:0;transform:scale(1.04);pointer-events:none}
-.splash-wave{position:absolute;bottom:0;left:0;right:0;height:120px;overflow:hidden}
-.splash-wave svg{width:200%;animation:waveMove 3s linear infinite}
-@keyframes waveMove{to{transform:translateX(-50%)}}
-.splash-logo{font-family:'Yeseva One',serif;font-size:36px;color:var(--white);text-align:center;line-height:1.1;animation:splashIn .8s cubic-bezier(.34,1.56,.64,1) both}
-.splash-sub{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.18em;text-transform:uppercase;margin-top:8px;animation:splashIn .8s .15s cubic-bezier(.34,1.56,.64,1) both}
-.splash-em{color:var(--gold3);font-style:italic}
-.splash-dot{display:flex;gap:7px;margin-top:28px;animation:splashIn .8s .3s both}
-.splash-dot span{width:8px;height:8px;border-radius:50%;background:var(--gold3);animation:dotPulse 1.2s ease-in-out infinite}
-.splash-dot span:nth-child(2){animation-delay:.2s}
-.splash-dot span:nth-child(3){animation-delay:.4s}
-@keyframes dotPulse{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1);opacity:1}}
-@keyframes splashIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-
-/*=== SCREENS ===*/
-.screen{display:none;flex-direction:column;min-height:100vh;animation:screenIn .35s ease both}
-.screen.active{display:flex}
-@keyframes screenIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--tab) + 20px)}
-.scroll-area::-webkit-scrollbar{display:none}
-
-/*=== BOTTOM NAV ===*/
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--tab);background:var(--white);border-top:1px solid var(--border);display:flex;align-items:center;z-index:200;padding-bottom:env(safe-area-inset-bottom,0);box-shadow:0 -4px 24px rgba(10,22,40,0.08)}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:8px 0;color:var(--muted);font-family:'Nunito',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;position:relative;transition:color .2s}
-.bnav-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:all .25s}
-.bnav-btn.active{color:var(--teal)}
-.bnav-btn.active svg{stroke:var(--teal);transform:translateY(-2px)}
-.bnav-pip{position:absolute;top:7px;right:calc(50% - 18px);width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:0;transition:opacity .2s}
-.bnav-btn.active .bnav-pip{opacity:1}
-.bnav-center-btn{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));box-shadow:0 4px 16px rgba(13,115,119,.5);border:3px solid var(--white);position:absolute;left:50%;transform:translateX(-50%) translateY(-20px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.bnav-center-btn:active{transform:translateX(-50%) translateY(-20px) scale(.92)}
-.bnav-center-btn svg{width:26px;height:26px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-/*=== HERO ===*/
-.hero{background:linear-gradient(165deg,var(--deep) 0%,var(--navy) 50%,#0a2a4a 100%);padding:52px 22px 32px;position:relative;overflow:hidden}
-.hero-waves{position:absolute;bottom:-1px;left:0;right:0;pointer-events:none}
-.hero-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--gold3);opacity:.4;animation:particleFloat linear infinite}
-@keyframes particleFloat{0%{transform:translateY(0) translateX(0);opacity:.4}50%{opacity:.8}100%{transform:translateY(-80px) translateX(20px);opacity:0}}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--glass2);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.18);border-radius:30px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--gold3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;animation:badgeIn .7s ease both}
-@keyframes badgeIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
-.hero-name{font-family:'Yeseva One',serif;font-size:38px;color:var(--white);line-height:1.0;animation:heroName .8s ease both}
-.hero-name em{color:var(--gold3);font-style:italic;font-family:'DM Serif Display',serif}
-@keyframes heroName{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
-.hero-loc{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;margin-top:6px;display:flex;align-items:center;gap:5px;animation:heroName .8s .1s both}
-.hero-desc{font-size:13px;color:rgba(255,255,255,.65);margin-top:10px;line-height:1.7;max-width:310px;animation:heroName .8s .2s both}
-.hero-stats{display:flex;gap:20px;margin-top:18px;animation:heroName .8s .3s both}
-.hstat{text-align:center}
-.hstat-num{font-family:'Yeseva One',serif;font-size:22px;color:var(--gold3);line-height:1}
-.hstat-lbl{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;font-weight:700;margin-top:2px}
-
-/*=== SECTION ===*/
-.sec{padding:22px 18px 0}
-.sec-hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
-.sec-title{font-family:'DM Serif Display',serif;font-size:23px;color:var(--text)}
-.sec-link{font-size:12px;color:var(--teal);font-weight:700;background:none;border:none;cursor:pointer;letter-spacing:.02em}
-
-/*=== ROOM CARD ===*/
-.rcard{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:18px;overflow:hidden;cursor:pointer;transition:all .22s cubic-bezier(.34,.68,.64,1);box-shadow:var(--shadow)}
-.rcard:active{transform:scale(.978) translateY(2px)}
-.rcard:hover{border-color:var(--teal2);box-shadow:var(--shadow2)}
-.rcard-img{height:190px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.rcard-img::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,22,40,.7) 0%,transparent 55%)}
-.rcard-tags{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;z-index:2}
-.rtag{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.22);color:white;font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase}
-.rtag.gold{background:rgba(232,160,32,.85);border-color:rgba(232,160,32,.4)}
-.rcard-overlay{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:14px 16px 0}
-.rcard-name-hero{font-family:'DM Serif Display',serif;font-size:22px;color:white;line-height:1.1}
-.rcard-price-hero{font-size:13px;color:rgba(255,255,255,.75);font-weight:600;margin-top:2px;margin-bottom:14px}
-.rcard-body{padding:14px 16px}
-.rcard-row{display:flex;justify-content:space-between;align-items:center}
-.rcard-sqm{font-size:12px;color:var(--muted);font-weight:600}
-.cap-chip{display:flex;align-items:center;gap:4px;background:var(--sand);border:1px solid var(--sand3);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:800;color:var(--text2)}
-.rcard-feats{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
-.rfeat{font-size:11px;background:#f0f8ff;border:1px solid rgba(13,115,119,.15);color:var(--teal);padding:3px 9px;border-radius:20px;font-weight:700}
-.rcard-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:2px}
-.rcard-price .amt{font-family:'Yeseva One',serif;font-size:28px;color:var(--teal);line-height:1}
-.rcard-price .per{font-size:11px;color:var(--muted);font-weight:600}
-.sel-btn{background:linear-gradient(135deg,var(--teal),var(--teal2));color:white;border:none;border-radius:var(--r-sm);padding:12px 20px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .18s;box-shadow:0 3px 12px rgba(13,115,119,.35);letter-spacing:.01em}
-.sel-btn:active{transform:scale(.94);box-shadow:none}
-
-/*=== ROOM ART ===*/
-.ra1{background:linear-gradient(145deg,#0a1628 0%,#112240 50%,#0d3350 100%)}
-.ra2{background:linear-gradient(145deg,#1a3a1a 0%,#0d4020 50%,#1a5030 100%)}
-.ra3{background:linear-gradient(145deg,#3a1a0a 0%,#4a2010 50%,#5a3520 100%)}
-.ra4{background:linear-gradient(145deg,#1a0a3a 0%,#2a1050 50%,#3a1548 100%)}
-
-/*=== STEP FLOW ===*/
-.sbar{background:var(--white);padding:12px 18px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(10,22,40,.05)}
-.sbar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.sbar-name{font-size:13px;font-weight:800;color:var(--teal)}
-.sbar-count{font-size:12px;color:var(--muted);font-weight:600}
-.sbar-steps{display:flex;gap:4px}
-.sseg{flex:1;height:5px;border-radius:3px;background:var(--cream);transition:background .4s,transform .2s;transform-origin:left}
-.sseg.done{background:var(--teal3)}
-.sseg.active{background:linear-gradient(90deg,var(--teal),var(--gold));animation:segPulse 1.8s ease-in-out infinite}
-@keyframes segPulse{0%,100%{opacity:1}50%{opacity:.75}}
-
-/*=== STEP ICONS (breadcrumb) ===*/
-.step-crumbs{display:flex;align-items:center;overflow-x:auto;padding:10px 18px;gap:0;scrollbar-width:none;border-bottom:1px solid var(--border);background:var(--white)}
-.step-crumbs::-webkit-scrollbar{display:none}
-.scrumb{display:flex;align-items:center;gap:0;flex-shrink:0}
-.scrumb-dot{width:28px;height:28px;border-radius:50%;background:var(--cream);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .25s;flex-shrink:0}
-.scrumb-dot.done{background:var(--teal3);border-color:var(--teal3);color:white}
-.scrumb-dot.active{background:var(--teal);border-color:var(--teal);transform:scale(1.15);box-shadow:0 0 0 4px rgba(13,115,119,.18)}
-.scrumb-line{width:24px;height:2px;background:var(--border);margin:0 2px;transition:background .3s}
-.scrumb-line.done{background:var(--teal3)}
-.scrumb-label{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;white-space:nowrap}
-
-/*=== CARDS & INPUTS ===*/
-.card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
-.card-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:13px;display:flex;align-items:center;gap:7px}
-.flabel{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;display:block}
-.finput{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;padding:13px 15px;outline:none;transition:all .2s;-webkit-appearance:none;appearance:none}
-.finput:focus{border-color:var(--teal);background:white;box-shadow:0 0 0 3px rgba(13,115,119,.1)}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fgroup{margin-bottom:14px}
-textarea.finput{resize:none}
-
-/*=== DATE CARDS ===*/
-.date-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.dcard{background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:13px 14px;position:relative;cursor:pointer;transition:all .2s}
-.dcard.has-val{background:white;border-color:var(--teal)}
-.dcard-lbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
-.dcard-inp{width:100%;background:transparent;border:none;outline:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--text);padding:0;cursor:pointer;-webkit-appearance:none}
-.dcard-inp::-webkit-calendar-picker-indicator{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
-
-/*=== NIGHT PILL ===*/
-.night-pill{background:linear-gradient(135deg,var(--teal),var(--teal2));color:white;border-radius:var(--r-sm);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;transition:all .3s}
-.np-nights{display:flex;align-items:baseline;gap:5px}
-.np-num{font-family:'Yeseva One',serif;font-size:32px;line-height:1}
-.np-lbl{font-size:13px;opacity:.8;font-weight:600}
-.np-total{text-align:right}
-.np-total-amt{font-family:'DM Serif Display',serif;font-size:22px;font-weight:700}
-.np-total-lbl{font-size:11px;opacity:.75;font-weight:600}
-
-/*=== STEPPER ===*/
-.stepper-row{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
-.stepper-row .info strong{display:block;font-size:15px;font-weight:800}
-.stepper-row .info small{font-size:12px;color:var(--muted);font-weight:600}
-.stepper{display:flex;align-items:center;gap:16px}
-.step-b{width:36px;height:36px;border-radius:50%;background:var(--cream);border:1.5px solid var(--border);font-size:20px;color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-weight:300;user-select:none}
-.step-b:active{transform:scale(.85);background:var(--sand)}
-.step-n{font-size:22px;font-weight:800;color:var(--teal);min-width:26px;text-align:center}
-
-/*=== ADDON CARDS ===*/
-.addon{background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:15px 16px;display:flex;align-items:flex-start;gap:13px;margin-bottom:12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.addon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,115,119,.04),transparent);opacity:0;transition:opacity .2s}
-.addon.sel{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal)}
-.addon.sel::before{opacity:1}
-.addon:active{transform:scale(.99)}
-.addon-ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0;transition:transform .2s}
-.addon.sel .addon-ico{transform:scale(1.08)}
-.addon-body{flex:1;min-width:0}
-.addon-name{font-size:15px;font-weight:800;color:var(--text)}
-.addon-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.55;font-weight:500}
-.addon-price{font-size:14px;font-weight:800;color:var(--teal);margin-top:7px}
-.addon-cb{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-top:2px}
-.addon.sel .addon-cb{background:var(--teal);border-color:var(--teal)}
-.addon-cb svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:all .2s;transform:scale(.5)}
-.addon.sel .addon-cb svg{opacity:1;transform:scale(1)}
-
-/*=== PROMO ===*/
-.promo-wrap{display:flex;gap:8px;margin-bottom:8px}
-.promo-inp{flex:1;background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--text);padding:12px 14px;outline:none;text-transform:uppercase;letter-spacing:.06em;transition:all .2s}
-.promo-inp:focus{border-color:var(--teal);background:white}
-.promo-btn{background:var(--teal);color:white;border:none;border-radius:var(--r-sm);padding:12px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:.02em}
-.promo-btn:active{transform:scale(.94)}
-.promo-ok{font-size:13px;font-weight:700;color:var(--success);display:none;padding:4px 0}
-.promo-err{font-size:13px;font-weight:700;color:var(--danger);display:none;padding:4px 0}
-.promo-hints{font-size:12px;color:var(--muted);font-weight:600;line-height:1.55}
-
-/*=== SUMMARY ===*/
-.price-row{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;padding:5px 0;color:var(--muted);font-weight:600}
-.price-row .v{color:var(--text);font-weight:700}
-.price-row.disc .v{color:var(--success)}
-.price-row.total{border-top:1.5px solid var(--border);margin-top:8px;padding-top:13px;font-size:17px;color:var(--text);font-weight:800}
-.price-row.total .v{font-family:'Yeseva One',serif;font-size:26px;color:var(--teal)}
-
-.room-mini{display:flex;align-items:center;gap:13px;padding:12px 0}
-.rm-img{width:60px;height:44px;border-radius:var(--r-xs);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px}
-.rm-nm{font-size:15px;font-weight:800}
-.rm-sub{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
-
-/*=== PAYMENT ===*/
-.pay-opt{background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:15px 16px;display:flex;align-items:center;gap:14px;margin-bottom:12px;cursor:pointer;transition:all .2s}
-.pay-opt.sel{border-color:var(--teal);background:rgba(13,115,119,.025);box-shadow:0 0 0 1px var(--teal)}
-.pay-opt:active{transform:scale(.99)}
-.pay-logo{width:52px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;letter-spacing:.01em;flex-shrink:0}
-.lg-gcash{background:#007aff;color:white}
-.lg-card{background:linear-gradient(135deg,#1a1a2e,#1e3a5f);color:white}
-.lg-maya{background:linear-gradient(135deg,#00c851,#007a2f);color:white}
-.pay-info strong{display:block;font-size:15px;font-weight:800}
-.pay-info small{font-size:12px;color:var(--muted);font-weight:600}
-.pay-radio{margin-left:auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--border);background:var(--cream);transition:all .2s;flex-shrink:0;position:relative}
-.pay-opt.sel .pay-radio{border-color:var(--teal);background:var(--teal)}
-.pay-opt.sel .pay-radio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:white}
-
-.cform{background:var(--cream);border-radius:var(--r-sm);padding:15px;margin-top:8px;display:none}
-.cform.show{display:block}
-.gcash-box{background:var(--cream);border-radius:var(--r-sm);padding:18px;margin-top:8px;text-align:center;display:none}
-.maya-box{background:var(--cream);border-radius:var(--r-sm);padding:18px;margin-top:8px;text-align:center;display:none}
-
-/*=== PROCESSING ===*/
-.proc-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:85vh;padding:40px;text-align:center}
-.proc-ring{width:72px;height:72px;border-radius:50%;border:5px solid var(--cream);border-top:5px solid var(--teal);animation:spin .75s linear infinite;margin-bottom:28px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.proc-ring2{width:50px;height:50px;border-radius:50%;border:4px solid var(--cream);border-top:4px solid var(--gold);animation:spin .9s linear infinite reverse;position:absolute;top:11px;left:11px}
-.proc-wrap{position:relative}
-
-/*=== CONFIRM SCREEN ===*/
-.conf-wrap{display:flex;flex-direction:column;align-items:center;padding:48px 22px 40px;text-align:center}
-.conf-ring{width:90px;height:90px;border-radius:50%;background:rgba(0,184,148,.1);border:2.5px solid rgba(0,184,148,.3);display:flex;align-items:center;justify-content:center;margin-bottom:22px;animation:popIn .55s cubic-bezier(.34,1.56,.64,1)}
-.conf-ring svg{width:42px;height:42px;stroke:var(--success);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.conf-ref{background:var(--cream);border:2px dashed var(--border2);border-radius:var(--r-sm);padding:12px 28px;font-family:'Yeseva One',serif;font-size:26px;color:var(--teal);letter-spacing:.1em;margin:16px 0}
-.conf-card{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;text-align:left;box-shadow:var(--shadow)}
-
-/*=== ITINERARY ===*/
-.itin-hero{background:linear-gradient(155deg,#0a2a1a,#0d3a20,#0a3a2a);padding:50px 20px 32px;color:white;position:relative;overflow:hidden}
-.itin-hero::before{content:'🌊';font-size:120px;position:absolute;bottom:-20px;right:-20px;opacity:.06}
-.day-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--border);margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow)}
-.day-hd{display:flex;align-items:center;gap:12px;padding:14px 16px;color:white}
-.day-num-badge{font-family:'Yeseva One',serif;font-size:13px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:3px 10px;letter-spacing:.04em}
-.day-title{font-size:14px;font-weight:800;letter-spacing:.01em}
-.act{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background .15s}
-.act:last-child{border-bottom:none}
-.act:active{background:var(--cream)}
-.act-time{font-size:11px;color:var(--muted);font-weight:800;width:52px;flex-shrink:0;padding-top:3px;letter-spacing:.02em}
-.act-ico{font-size:20px;flex-shrink:0}
-.act-info strong{display:block;font-size:14px;font-weight:800;color:var(--text)}
-.act-info small{font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px;display:block;font-weight:500}
-
-.attr-scroll{display:flex;gap:12px;overflow-x:auto;padding:0 18px 4px;scrollbar-width:none}
-.attr-scroll::-webkit-scrollbar{display:none}
-.acard{flex-shrink:0;width:150px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:all .2s}
-.acard:active{transform:scale(.97)}
-.acard-img{height:90px;display:flex;align-items:center;justify-content:center;font-size:34px}
-.acard-body{padding:10px 11px}
-.acard-name{font-size:12px;font-weight:800;line-height:1.3;color:var(--text)}
-.acard-meta{font-size:11px;color:var(--muted);margin-top:3px;font-weight:600}
-
-/*=== ADMIN ===*/
-.admin-login{padding:52px 24px;text-align:center}
-.admin-av{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 20px;box-shadow:0 4px 20px rgba(13,115,119,.4)}
-.stats-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px}
-.stat{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:16px 14px;text-align:center;box-shadow:var(--shadow);transition:transform .2s}
-.stat:active{transform:scale(.97)}
-.stat-n{font-family:'Yeseva One',serif;font-size:28px;color:var(--teal);line-height:1}
-.stat-l{font-size:10px;color:var(--muted);font-weight:800;margin-top:5px;text-transform:uppercase;letter-spacing:.06em}
-.brec{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:15px 16px;margin:0 16px 12px;box-shadow:var(--shadow);transition:all .2s;cursor:pointer}
-.brec:active{border-color:var(--teal);transform:scale(.995)}
-.brec-hd{display:flex;justify-content:space-between;align-items:flex-start}
-.brec-guest{font-size:16px;font-weight:800;color:var(--text)}
-.brec-room{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
-.brec-amt{font-family:'Yeseva One',serif;font-size:21px;color:var(--teal)}
-.brec-meta{font-size:13px;color:var(--muted);font-weight:600;line-height:1.8;margin-top:8px}
-.brec-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.btag{font-size:11px;background:rgba(13,115,119,.08);border:1px solid rgba(13,115,119,.18);padding:3px 9px;border-radius:20px;color:var(--teal);font-weight:700}
-.brec-ref{font-size:11px;font-weight:700;color:var(--muted2);margin-top:7px;display:block;letter-spacing:.04em}
-.status-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
-.sc-confirmed{background:rgba(0,184,148,.1);color:var(--success)}
-
-/*=== BUTTONS ===*/
-.btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal2));color:white;border:none;border-radius:var(--r-sm);padding:15px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 16px rgba(13,115,119,.3);letter-spacing:.02em;margin-bottom:10px}
-.btn:active{transform:scale(.97);box-shadow:none}
-.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
-.btn.outline{background:transparent;color:var(--teal);border:2px solid var(--teal);box-shadow:none}
-.btn.outline:active{background:rgba(13,115,119,.05)}
-.btn.gold-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));box-shadow:0 4px 16px rgba(232,160,32,.35)}
-.btn.success-btn{background:linear-gradient(135deg,var(--success),#00a381);box-shadow:0 4px 16px rgba(0,184,148,.35)}
-
-/*=== TOP BAR ===*/
-.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(10,22,40,.05)}
-.topbar-title{font-family:'DM Serif Display',serif;font-size:20px;flex:1;color:var(--text)}
-.back-b{width:38px;height:38px;border-radius:50%;background:var(--cream);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s}
-.back-b:active{transform:scale(.88)}
-.back-b svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-/*=== MISC ===*/
-.info-box{background:linear-gradient(135deg,rgba(232,160,32,.1),rgba(232,160,32,.06));border:1.5px solid rgba(232,160,32,.3);border-radius:var(--r-sm);padding:13px 15px;font-size:13px;color:#7a5010;font-weight:600;line-height:1.6;margin-bottom:16px}
-.info-box strong{font-weight:800;color:#5a3a05}
-.empty-state{text-align:center;padding:52px 24px;color:var(--muted)}
-.empty-ico{font-size:52px;margin-bottom:12px}
-.empty-state p{font-size:14px;line-height:1.65;font-weight:500}
-.divider{height:1px;background:var(--border);margin:14px 0}
-
-/*=== TOAST ===*/
-.toast{position:fixed;bottom:calc(var(--tab) + 14px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--deep);color:white;font-size:13px;font-weight:700;padding:11px 22px;border-radius:30px;z-index:400;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(10,22,40,.35);max-width:360px;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/*=== RIPPLE ===*/
-.ripple{position:relative;overflow:hidden}
-.ripple::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripple-out .6s ease-out;pointer-events:none}
-@keyframes ripple-out{to{transform:scale(4);opacity:0}}
-</style>
-</head>
-<body>
-
-<!-- SPLASH -->
-<div id="splash">
-  <div class="hero-particles" id="particles"></div>
-  <div class="splash-logo">Andanian's<br><em class="splash-em">Hotel</em></div>
-  <div class="splash-sub">Pangasinan, Philippines</div>
-  <div class="splash-dot"><span></span><span></span><span></span></div>
-  <div class="splash-wave">
-    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1380,20 1440,40 L1440,80 L0,80 Z" fill="rgba(13,115,119,0.35)"/>
-      <path d="M0,55 C200,15 400,75 600,55 C800,35 1000,75 1200,55 C1320,45 1400,65 1440,55 L1440,80 L0,80 Z" fill="rgba(13,115,119,0.2)"/>
-    </svg>
-  </div>
-</div>
-
-<!-- ============ SCREEN: HOME ============ -->
-<div class="screen active" id="s-home">
-  <div class="scroll-area">
-
-    <!-- Hero -->
-    <div class="hero">
-      <div class="hero-particles" id="hero-particles"></div>
-      <div class="hero-badge">⭐ #1 in Pangasinan · Lingayen Gulf</div>
-      <h1 class="hero-name">Andanian's<br><em>Hotel</em></h1>
-      <div class="hero-loc">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Lingayen, Pangasinan
-      </div>
-      <p class="hero-desc">Experience warm Filipino hospitality where the Lingayen Gulf meets your dream vacation.</p>
-      <div class="hero-stats">
-        <div class="hstat"><div class="hstat-num">4.9</div><div class="hstat-lbl">Rating</div></div>
-        <div class="hstat"><div class="hstat-num">500+</div><div class="hstat-lbl">Guests</div></div>
-        <div class="hstat"><div class="hstat-num">4</div><div class="hstat-lbl">Room Types</div></div>
-        <div class="hstat"><div class="hstat-num">12+</div><div class="hstat-lbl">Amenities</div></div>
-      </div>
-      <div class="hero-waves">
-        <svg viewBox="0 0 430 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,24 C70,48 140,0 215,24 C290,48 360,8 430,24 L430,48 L0,48 Z" fill="#f9f6f0"/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- Rooms -->
-    <div class="sec">
-      <div class="sec-hd">
-        <h2 class="sec-title">Our Rooms</h2>
-        <span class="sec-link">4 available</span>
-      </div>
-      <div class="info-box">🏷️ <strong>Promo codes:</strong> Try <strong>SUMMER10</strong>, <strong>ANDA20</strong> or <strong>WELCOME15</strong> at checkout!</div>
-
-      <!-- Room 1 -->
-      <div class="rcard ripple" onclick="pickRoom(0,this)">
-        <div class="rcard-img ra1">
-          <svg width="140" height="100" viewBox="0 0 140 100" fill="none" opacity=".18"><rect x="20" y="35" width="100" height="60" stroke="white" stroke-width="1.5"/><rect x="35" y="55" width="22" height="40" stroke="white" stroke-width="1"/><rect x="83" y="55" width="22" height="40" stroke="white" stroke-width="1"/><path d="M15 35 L70 16 L125 35" stroke="white" stroke-width="1.5"/><path d="M0 95 Q35 88 70 92 Q105 96 140 88" stroke="white" stroke-width="1" opacity=".5"/></svg>
-          <div class="rcard-tags"><span class="rtag">Available</span></div>
-          <div class="rcard-overlay">
-            <div class="rcard-name-hero">Deluxe Room</div>
-            <div class="rcard-price-hero">₱2,800 / night · Up to 2 guests</div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <div class="rcard-row"><div class="rcard-sqm">28 m² · Garden View</div><div class="cap-chip">👤 1–2</div></div>
-          <div class="rcard-feats"><span class="rfeat">AC</span><span class="rfeat">Free WiFi</span><span class="rfeat">Smart TV</span><span class="rfeat">Hot Shower</span><span class="rfeat">Mini Fridge</span></div>
-          <div class="rcard-footer">
-            <div class="rcard-price"><div class="amt">₱2,800</div><div class="per">per night</div></div>
-            <button class="sel-btn" onclick="pickRoom(0,this);event.stopPropagation()">Book Now</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Room 2 -->
-      <div class="rcard ripple" onclick="pickRoom(1,this)">
-        <div class="rcard-img ra2">
-          <svg width="140" height="100" viewBox="0 0 140 100" fill="none" opacity=".18"><rect x="10" y="28" width="120" height="68" stroke="white" stroke-width="1.5"/><rect x="30" y="48" width="25" height="48" stroke="white" stroke-width="1"/><rect x="85" y="48" width="25" height="48" stroke="white" stroke-width="1"/><rect x="57" y="56" width="26" height="40" stroke="white" stroke-width="1"/><path d="M10 28 L70 8 L130 28" stroke="white" stroke-width="1.5"/></svg>
-          <div class="rcard-tags"><span class="rtag">Available</span><span class="rtag gold">⭐ Popular</span></div>
-          <div class="rcard-overlay">
-            <div class="rcard-name-hero">Superior Room</div>
-            <div class="rcard-price-hero">₱3,800 / night · Up to 3 guests</div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <div class="rcard-row"><div class="rcard-sqm">38 m² · Pool & Garden View</div><div class="cap-chip">👤 1–3</div></div>
-          <div class="rcard-feats"><span class="rfeat">AC</span><span class="rfeat">Balcony</span><span class="rfeat">Smart TV</span><span class="rfeat">Mini Fridge</span><span class="rfeat">WiFi</span></div>
-          <div class="rcard-footer">
-            <div class="rcard-price"><div class="amt">₱3,800</div><div class="per">per night</div></div>
-            <button class="sel-btn" onclick="pickRoom(1,this);event.stopPropagation()">Book Now</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Room 3 -->
-      <div class="rcard ripple" onclick="pickRoom(2,this)">
-        <div class="rcard-img ra3">
-          <svg width="140" height="100" viewBox="0 0 140 100" fill="none" opacity=".18"><rect x="5" y="32" width="130" height="64" stroke="white" stroke-width="1.5"/><rect x="22" y="50" width="28" height="46" stroke="white" stroke-width="1"/><rect x="90" y="50" width="28" height="46" stroke="white" stroke-width="1"/><rect x="54" y="58" width="32" height="38" stroke="white" stroke-width="1"/><path d="M5 32 L70 12 L135 32" stroke="white" stroke-width="1.5"/><rect x="38" y="20" width="64" height="12" stroke="white" stroke-width="1" opacity=".5"/></svg>
-          <div class="rcard-tags"><span class="rtag">Available</span></div>
-          <div class="rcard-overlay">
-            <div class="rcard-name-hero">Family Suite</div>
-            <div class="rcard-price-hero">₱5,500 / night · Up to 5 guests</div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <div class="rcard-row"><div class="rcard-sqm">58 m² · Gulf View · 2 Bedrooms</div><div class="cap-chip">👤 2–5</div></div>
-          <div class="rcard-feats"><span class="rfeat">AC</span><span class="rfeat">Kitchenette</span><span class="rfeat">Sofa Bed</span><span class="rfeat">Bathtub</span><span class="rfeat">WiFi</span></div>
-          <div class="rcard-footer">
-            <div class="rcard-price"><div class="amt">₱5,500</div><div class="per">per night</div></div>
-            <button class="sel-btn" onclick="pickRoom(2,this);event.stopPropagation()">Book Now</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Room 4 -->
-      <div class="rcard ripple" onclick="pickRoom(3,this)">
-        <div class="rcard-img ra4">
-          <svg width="140" height="100" viewBox="0 0 140 100" fill="none" opacity=".18"><rect x="8" y="30" width="124" height="68" stroke="white" stroke-width="1.5"/><path d="M8 30 Q70 10 132 30" stroke="white" stroke-width="1.5"/><rect x="22" y="48" width="96" height="50" stroke="white" stroke-width=".75" stroke-dasharray="4 2"/><circle cx="70" cy="55" r="10" stroke="white" stroke-width="1"/><path d="M0 94 Q35 86 70 90 Q105 94 140 86" stroke="white" stroke-width="1.2" opacity=".7"/></svg>
-          <div class="rcard-tags"><span class="rtag">Available</span><span class="rtag gold">🌟 Premium</span></div>
-          <div class="rcard-overlay">
-            <div class="rcard-name-hero">Presidential Suite</div>
-            <div class="rcard-price-hero">₱8,500 / night · Up to 4 guests</div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <div class="rcard-row"><div class="rcard-sqm">85 m² · Panoramic Gulf View</div><div class="cap-chip">👤 2–4</div></div>
-          <div class="rcard-feats"><span class="rfeat">Jacuzzi</span><span class="rfeat">Private Terrace</span><span class="rfeat">Butler</span><span class="rfeat">Smart TV</span><span class="rfeat">WiFi</span></div>
-          <div class="rcard-footer">
-            <div class="rcard-price"><div class="amt">₱8,500</div><div class="per">per night</div></div>
-            <button class="sel-btn" onclick="pickRoom(3,this);event.stopPropagation()">Book Now</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hotel Amenities -->
-      <div class="sec-hd" style="margin-top:8px"><h2 class="sec-title">Amenities</h2></div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px">
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">🌐</div>Free WiFi</div>
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">🏊</div>Pool</div>
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">🍳</div>Restaurant</div>
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">🚗</div>Parking</div>
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">💆</div>Spa</div>
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">💪</div>Gym</div>
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">🍷</div>Bar</div>
-        <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--muted);box-shadow:var(--shadow)"><div style="font-size:22px;margin-bottom:5px">📶</div>24/7 Staff</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ SCREEN: BOOKING ============ -->
-<div class="screen" id="s-booking">
-  <!-- Step bar -->
-  <div class="sbar">
-    <div class="sbar-top">
-      <span class="sbar-name" id="sbar-name">📅 Select Dates</span>
-      <span class="sbar-count" id="sbar-count">Step 1 / 5</span>
-    </div>
-    <div class="sbar-steps">
-      <div class="sseg" id="ss0"></div><div class="sseg" id="ss1"></div><div class="sseg" id="ss2"></div><div class="sseg" id="ss3"></div><div class="sseg" id="ss4"></div>
-    </div>
-  </div>
-  <!-- Step crumbs -->
-  <div class="step-crumbs" id="crumbs">
-    <div class="scrumb"><div class="scrumb-dot active" id="cr0">📅</div></div>
-    <div class="scrumb"><div class="scrumb-line" id="cl0"></div><div class="scrumb-dot" id="cr1">✨</div></div>
-    <div class="scrumb"><div class="scrumb-line" id="cl1"></div><div class="scrumb-dot" id="cr2">👤</div></div>
-    <div class="scrumb"><div class="scrumb-line" id="cl2"></div><div class="scrumb-dot" id="cr3">📋</div></div>
-    <div class="scrumb"><div class="scrumb-line" id="cl3"></div><div class="scrumb-dot" id="cr4">💳</div></div>
-  </div>
-
-  <!-- STEP 0: DATES -->
-  <div class="scroll-area" id="sp0">
-    <div class="sec" style="padding-top:18px">
-      <!-- Selected Room Preview -->
-      <div class="card" style="margin-bottom:14px">
-        <div class="card-title">🛏️ Selected Room</div>
-        <div class="room-mini">
-          <div class="rm-img ra1" id="d-rm-img">🏨</div>
-          <div>
-            <div class="rm-nm" id="d-rm-name">Deluxe Room</div>
-            <div class="rm-sub" id="d-rm-price">₱2,800 / night</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Dates -->
-      <div class="card">
-        <div class="card-title">📅 Check-in & Check-out</div>
-        <div class="date-cards">
-          <div class="dcard" id="dci"><div class="dcard-lbl">Check-in</div><input type="date" class="dcard-inp" id="ci" onchange="calcNights()"></div>
-          <div class="dcard" id="dco"><div class="dcard-lbl">Check-out</div><input type="date" class="dcard-inp" id="co" onchange="calcNights()"></div>
-        </div>
-        <div class="night-pill" id="npill">
-          <div class="np-nights"><div class="np-num" id="np-n">0</div><div class="np-lbl">nights</div></div>
-          <div class="np-total"><div class="np-total-amt" id="np-amt">₱ —</div><div class="np-total-lbl">room subtotal</div></div>
-        </div>
-      </div>
-
-      <!-- Guests -->
-      <div class="card">
-        <div class="card-title">👤 Number of Guests</div>
-        <div class="stepper-row">
-          <div class="info"><strong>Guests</strong><small>Max: <span id="d-maxcap">2</span> for this room</small></div>
-          <div class="stepper">
-            <div class="step-b" onclick="chGuest(-1)">−</div>
-            <span class="step-n" id="gcount">1</span>
-            <div class="step-b" onclick="chGuest(1)">+</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="padding:0 18px 8px">
-      <button class="btn" onclick="nextS()">Continue to Add-ons <span>→</span></button>
-      <button class="btn outline" onclick="nav('s-home')">← Change Room</button>
-    </div>
-  </div>
-
-  <!-- STEP 1: ADD-ONS -->
-  <div class="scroll-area" id="sp1" style="display:none">
-    <div class="sec" style="padding-top:18px">
-      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:4px">Enhance Your Stay</div>
-      <div style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:18px;line-height:1.55">Optional extras — add or remove freely before checkout</div>
-
-      <div class="addon" id="ao-tour" onclick="togAddon('tour')">
-        <div class="addon-ico" style="background:#e8f5e9">⛵</div>
-        <div class="addon-body">
-          <div class="addon-name">Pangasinan Island Tour</div>
-          <div class="addon-desc">Day trip to Hundred Islands, snorkeling & island hopping, picnic lunch included</div>
-          <div class="addon-price" id="ao-tour-lbl">₱1,000 × guests</div>
-        </div>
-        <div class="addon-cb"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
-      </div>
-
-      <div class="addon" id="ao-pickup" onclick="togAddon('pickup')">
-        <div class="addon-ico" style="background:#e3f2fd">🚐</div>
-        <div class="addon-body">
-          <div class="addon-name">Airport / Terminal Pickup</div>
-          <div class="addon-desc">Round-trip transfer from Dagupan Bus Terminal or Lingayen Airport — any schedule</div>
-          <div class="addon-price">₱600 flat rate</div>
-        </div>
-        <div class="addon-cb"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
-      </div>
-
-      <div class="addon" id="ao-breakfast" onclick="togAddon('breakfast')">
-        <div class="addon-ico" style="background:#fff8e1">🍳</div>
-        <div class="addon-body">
-          <div class="addon-name">Breakfast Buffet</div>
-          <div class="addon-desc">Daily all-you-can-eat Filipino and continental breakfast served 6–10 AM</div>
-          <div class="addon-price" id="ao-bfast-lbl">₱380 × guests × nights</div>
-        </div>
-        <div class="addon-cb"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
-      </div>
-
-      <div class="addon" id="ao-spa" onclick="togAddon('spa')">
-        <div class="addon-ico" style="background:#fce4ec">💆</div>
-        <div class="addon-body">
-          <div class="addon-name">Hilot Spa Package</div>
-          <div class="addon-desc">Traditional Filipino massage for 2 — 90-min session at our garden spa, per night</div>
-          <div class="addon-price" id="ao-spa-lbl">₱900 × nights</div>
-        </div>
-        <div class="addon-cb"><svg viewBox="0 0 14 14"><polyline points="2 7 6 11 12 3"/></svg></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">💰 Add-ons Subtotal</div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:14px;color:var(--muted);font-weight:700">Selected extras:</span>
-          <span style="font-family:'Yeseva One',serif;font-size:24px;color:var(--teal)" id="ao-total">₱0</span>
-        </div>
-        <div style="font-size:12px;color:var(--muted2);margin-top:5px;font-weight:600">You can change selections before final payment</div>
-      </div>
-    </div>
-    <div style="padding:0 18px 8px">
-      <button class="btn" onclick="nextS()">Continue to Guest Info →</button>
-      <button class="btn outline" onclick="prevS()">← Back to Dates</button>
-    </div>
-  </div>
-
-  <!-- STEP 2: GUEST INFO -->
-  <div class="scroll-area" id="sp2" style="display:none">
-    <div class="sec" style="padding-top:18px">
-      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:4px">Your Details</div>
-      <div style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:18px">Stored with your booking record</div>
-
-      <div class="card">
-        <div class="fgroup">
-          <label class="flabel">Full Name</label>
-          <input class="finput" type="text" id="g-name" placeholder="e.g. Juan dela Cruz" autocomplete="name">
-        </div>
-        <div class="fgroup">
-          <label class="flabel">Email Address</label>
-          <input class="finput" type="email" id="g-email" placeholder="e.g. juan@example.com" autocomplete="email">
-        </div>
-        <div class="fgroup">
-          <label class="flabel">Phone Number</label>
-          <input class="finput" type="tel" id="g-phone" placeholder="e.g. 09171234567" autocomplete="tel">
-        </div>
-        <div class="fgroup" style="margin-bottom:0">
-          <label class="flabel">Special Requests <span style="text-transform:none;font-weight:600;color:var(--muted2)">(optional)</span></label>
-          <textarea class="finput" id="g-req" rows="3" placeholder="Late check-in, extra pillows, crib for baby, anniversary decoration…"></textarea>
-        </div>
-      </div>
-    </div>
-    <div style="padding:0 18px 8px">
-      <button class="btn" onclick="nextS()">Continue to Summary →</button>
-      <button class="btn outline" onclick="prevS()">← Back to Add-ons</button>
-    </div>
-  </div>
-
-  <!-- STEP 3: SUMMARY -->
-  <div class="scroll-area" id="sp3" style="display:none">
-    <div class="sec" style="padding-top:18px">
-      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:4px">Booking Summary</div>
-      <div style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:18px">Review everything before payment</div>
-
-      <!-- Room -->
-      <div class="card">
-        <div class="card-title">🛏️ Room</div>
-        <div class="room-mini">
-          <div class="rm-img ra1" id="s-rm-img">🏨</div>
-          <div>
-            <div class="rm-nm" id="s-rm-nm">—</div>
-            <div class="rm-sub" id="s-rm-meta">—</div>
-          </div>
-        </div>
-        <div class="price-row"><span>Room rate</span><span class="v" id="s-rm-line">—</span></div>
-        <div class="price-row"><span>Nights</span><span class="v" id="s-nights-val">—</span></div>
-        <div class="divider"></div>
-        <div class="price-row"><span>Room subtotal</span><span class="v" id="s-rm-sub">₱0</span></div>
-      </div>
-
-      <!-- Addons -->
-      <div class="card" id="s-addons-card">
-        <div class="card-title">✨ Add-ons</div>
-        <div id="s-addons-list"><div style="font-size:13px;color:var(--muted);font-weight:600">None selected</div></div>
-      </div>
-
-      <!-- Guest info mini -->
-      <div class="card">
-        <div class="card-title">👤 Guest</div>
-        <div class="price-row" style="font-size:13px"><span>Name</span><span class="v" id="s-gname">—</span></div>
-        <div class="price-row" style="font-size:13px"><span>Email</span><span class="v" id="s-gemail" style="word-break:break-all;text-align:right;max-width:200px">—</span></div>
-        <div class="price-row" style="font-size:13px"><span>Guests</span><span class="v" id="s-gcount">—</span></div>
-      </div>
-
-      <!-- Promo -->
-      <div class="card">
-        <div class="card-title">🏷️ Promo Code</div>
-        <div class="promo-wrap">
-          <input class="promo-inp" type="text" id="promo-inp" placeholder="ENTER CODE" maxlength="15" onkeydown="if(event.key==='Enter')applyPromo()">
-          <button class="promo-btn" onclick="applyPromo()">Apply</button>
-        </div>
-        <div class="promo-ok" id="promo-ok">✓ <span id="promo-ok-txt">Promo applied!</span></div>
-        <div class="promo-err" id="promo-err">✕ Invalid promo code. Please try again.</div>
-        <div class="promo-hints">💡 Try: <strong>SUMMER10</strong> · <strong>ANDA20</strong> · <strong>WELCOME15</strong></div>
-      </div>
-
-      <!-- Totals -->
-      <div class="card">
-        <div class="card-title">💰 Price Breakdown</div>
-        <div class="price-row"><span>Room subtotal</span><span class="v" id="t-room">₱0</span></div>
-        <div class="price-row"><span>Add-ons total</span><span class="v" id="t-addons">₱0</span></div>
-        <div class="price-row disc" id="t-disc-row" style="display:none"><span id="t-disc-lbl">Discount</span><span class="v" id="t-disc">—</span></div>
-        <div class="price-row total"><span>TOTAL</span><span class="v" id="t-total">₱0</span></div>
-      </div>
-    </div>
-    <div style="padding:0 18px 8px">
-      <button class="btn gold-btn" onclick="nextS()">Proceed to Payment 💳</button>
-      <button class="btn outline" onclick="prevS()">← Edit Details</button>
-    </div>
-  </div>
-
-  <!-- STEP 4: PAYMENT -->
-  <div class="scroll-area" id="sp4" style="display:none">
-    <div class="sec" style="padding-top:18px">
-      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:4px">Choose Payment</div>
-      <div style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:18px">Select your preferred method</div>
-
-      <div class="pay-opt ripple" id="py-gcash" onclick="selPay('gcash')">
-        <div class="pay-logo lg-gcash">GCash</div>
-        <div class="pay-info"><strong>GCash</strong><small>Enter your registered mobile number</small></div>
-        <div class="pay-radio"></div>
-      </div>
-      <div class="gcash-box" id="gcash-box">
-        <div style="font-size:32px;margin-bottom:10px">📱</div>
-        <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px">GCash Mobile Payment</div>
-        <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:12px">Enter your GCash-registered number</div>
-        <input class="finput" type="tel" id="gcash-num" placeholder="09XX XXX XXXX">
-      </div>
-
-      <div class="pay-opt ripple" id="py-maya" onclick="selPay('maya')">
-        <div class="pay-logo lg-maya">Maya</div>
-        <div class="pay-info"><strong>Maya (PayMaya)</strong><small>Enter your Maya account number</small></div>
-        <div class="pay-radio"></div>
-      </div>
-      <div class="maya-box" id="maya-box">
-        <div style="font-size:32px;margin-bottom:10px">💚</div>
-        <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px">Maya Payment</div>
-        <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:12px">Enter your Maya account number</div>
-        <input class="finput" type="tel" id="maya-num" placeholder="09XX XXX XXXX">
-      </div>
-
-      <div class="pay-opt ripple" id="py-card" onclick="selPay('card')">
-        <div class="pay-logo lg-card">VISA<br><span style="font-size:9px;opacity:.75">/ MC</span></div>
-        <div class="pay-info"><strong>Credit / Debit Card</strong><small>Visa, Mastercard, JCB accepted</small></div>
-        <div class="pay-radio"></div>
-      </div>
-      <div class="cform" id="card-form">
-        <div class="fgroup">
-          <label class="flabel">Card Number</label>
-          <input class="finput" type="text" id="cc-num" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)">
-        </div>
-        <div class="frow">
-          <div class="fgroup"><label class="flabel">Expiry</label><input class="finput" type="text" id="cc-exp" placeholder="MM / YY" maxlength="7" oninput="fmtExp(this)"></div>
-          <div class="fgroup"><label class="flabel">CVV</label><input class="finput" type="password" id="cc-cvv" placeholder="•••" maxlength="4"></div>
-        </div>
-        <div class="fgroup" style="margin-bottom:0">
-          <label class="flabel">Name on Card</label>
-          <input class="finput" type="text" id="cc-name" placeholder="JUAN DELA CRUZ">
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:8px">
-        <div class="card-title">💳 Amount to Pay</div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:15px;color:var(--muted);font-weight:700">Total</span>
-          <span style="font-family:'Yeseva One',serif;font-size:32px;color:var(--teal)" id="py-total">₱0</span>
-        </div>
-        <div style="font-size:11px;color:var(--muted2);font-weight:600;margin-top:6px;line-height:1.55;text-align:center">🔒 Simulated payment — no real charges made</div>
-      </div>
-    </div>
-    <div style="padding:0 18px 8px">
-      <button class="btn gold-btn" id="pay-btn" onclick="doPay()" disabled>Pay Now 🔐</button>
-      <button class="btn outline" onclick="prevS()">← Back to Summary</button>
-    </div>
-  </div>
-
-  <!-- STEP 5: PROCESSING -->
-  <div id="sp5" style="display:none;flex:1">
-    <div class="proc-screen">
-      <div class="proc-wrap">
-        <div class="proc-ring"></div>
-        <div class="proc-ring2"></div>
-      </div>
-      <h2 style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);margin-bottom:10px">Processing Payment…</h2>
-      <p style="font-size:14px;color:var(--muted);line-height:1.65;font-weight:600;max-width:260px">Please wait while we securely confirm your booking</p>
-      <div style="margin-top:20px;font-size:13px;color:var(--teal);font-weight:700" id="proc-msg">Verifying payment…</div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ SCREEN: CONFIRM ============ -->
-<div class="screen" id="s-confirm">
-  <div class="scroll-area">
-    <div class="conf-wrap">
-      <div class="conf-ring">
-        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <h2 style="font-family:'Yeseva One',serif;font-size:28px;color:var(--text)">Payment Successful!</h2>
-      <p style="font-size:14px;color:var(--muted);margin-top:8px;line-height:1.65;font-weight:600;max-width:280px">Your booking at Andanian's Hotel is officially confirmed!</p>
-      <div class="conf-ref" id="c-ref">AND-00000</div>
-      <div class="conf-card">
-        <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">📋 Booking Confirmation</div>
-        <div class="price-row" style="font-size:13px"><span>Guest</span><span class="v" id="c-name">—</span></div>
-        <div class="price-row" style="font-size:13px"><span>Room</span><span class="v" id="c-room">—</span></div>
-        <div class="price-row" style="font-size:13px"><span>Check-in</span><span class="v" id="c-in">—</span></div>
-        <div class="price-row" style="font-size:13px"><span>Check-out</span><span class="v" id="c-out">—</span></div>
-        <div class="price-row" style="font-size:13px"><span>Guests</span><span class="v" id="c-g">—</span></div>
-        <div class="price-row" style="font-size:13px"><span>Add-ons</span><span class="v" id="c-ao">None</span></div>
-        <div class="price-row" style="font-size:13px"><span>Payment</span><span class="v" id="c-pay">—</span></div>
-        <div class="divider"></div>
-        <div class="price-row total" style="font-size:15px"><span>Total Paid</span><span class="v" id="c-total">₱0</span></div>
-      </div>
-      <div style="width:100%;margin-top:18px;display:flex;flex-direction:column;gap:0">
-        <button class="btn success-btn" onclick="nav('s-home')">🏠 Back to Home</button>
-        <button class="btn outline" onclick="goAdmin()">View All Bookings (Admin)</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ SCREEN: ITINERARIES ============ -->
-<div class="screen" id="s-itineraries">
-  <div class="scroll-area">
-    <div class="itin-hero">
-      <div style="font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;font-weight:800;display:flex;align-items:center;gap:5px;margin-bottom:10px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Pangasinan Highlights
-      </div>
-      <h1 style="font-family:'Yeseva One',serif;font-size:32px;color:white;line-height:1.05">Explore<br><span style="color:#a8e6cf;font-family:'DM Serif Display',serif;font-style:italic">Pangasinan</span></h1>
-      <p style="font-size:13px;opacity:.7;margin-top:8px;line-height:1.65;color:white;max-width:300px">Curated adventures and hidden gems around Lingayen — near Andanian's Hotel</p>
-      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-        <span style="background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);color:white;font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px">🏝️ Hundred Islands</span>
-        <span style="background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);color:white;font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px">🌊 Lingayen Gulf</span>
-        <span style="background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);color:white;font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px">🏖️ Bolinao</span>
-      </div>
-      <div style="position:absolute;bottom:-1px;left:0;right:0">
-        <svg viewBox="0 0 430 36" fill="none"><path d="M0,18 C80,36 160,0 215,18 C270,36 350,4 430,18 L430,36 L0,36 Z" fill="#f9f6f0"/></svg>
-      </div>
-    </div>
-
-    <div class="sec" style="padding-top:18px">
-      <h2 class="sec-title">3-Day Pangasinan Tour</h2>
-      <div style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:18px;line-height:1.55">Recommended itinerary starting from Andanian's Hotel</div>
-
-      <!-- Day 1 -->
-      <div class="day-card">
-        <div class="day-hd" style="background:linear-gradient(135deg,var(--teal),var(--teal2))">
-          <span class="day-num-badge">Day 01</span>
-          <span class="day-title">Arrival & Lingayen Gulf</span>
-          <span style="margin-left:auto;font-size:20px">🌅</span>
-        </div>
-        <div>
-          <div class="act"><div class="act-time">2:00 PM</div><div class="act-ico">🏨</div><div class="act-info"><strong>Check-in & Welcome</strong><small>Settle in, enjoy complimentary mango shake at the lobby lounge</small></div></div>
-          <div class="act"><div class="act-time">4:00 PM</div><div class="act-ico">🏖️</div><div class="act-info"><strong>Lingayen Gulf Beach Walk</strong><small>Stroll along the historic WWII landing site beach — free & 5 min away</small></div></div>
-          <div class="act"><div class="act-time">6:30 PM</div><div class="act-ico">🌅</div><div class="act-info"><strong>Gulf Sunset View</strong><small>Famous for its fiery orange sky — best viewed from the hotel rooftop</small></div></div>
-          <div class="act"><div class="act-time">7:30 PM</div><div class="act-ico">🍽️</div><div class="act-info"><strong>Dinner at Andanian's Restaurant</strong><small>Try the Bonuan bangus sisig and fresh Lingayen Gulf catch</small></div></div>
-        </div>
-      </div>
-
-      <!-- Day 2 -->
-      <div class="day-card">
-        <div class="day-hd" style="background:linear-gradient(135deg,#1a5030,#0d3a20)">
-          <span class="day-num-badge">Day 02</span>
-          <span class="day-title">Hundred Islands Adventure</span>
-          <span style="margin-left:auto;font-size:20px">🏝️</span>
-        </div>
-        <div>
-          <div class="act"><div class="act-time">7:00 AM</div><div class="act-ico">🍳</div><div class="act-info"><strong>Breakfast Buffet</strong><small>Fuel up! Full Filipino spread — sinangag, tocino, champorado & more</small></div></div>
-          <div class="act"><div class="act-time">9:00 AM</div><div class="act-ico">⛵</div><div class="act-info"><strong>Hundred Islands National Park</strong><small>Boat tour of 124 islands, snorkeling, kayaking — ₱1,500/boat (~1 hr drive)</small></div></div>
-          <div class="act"><div class="act-time">1:00 PM</div><div class="act-ico">🦀</div><div class="act-info"><strong>Alaminos Seafood Lunch</strong><small>Fresh crabs, shrimps and fish at the famous Alaminos public market</small></div></div>
-          <div class="act"><div class="act-time">4:00 PM</div><div class="act-ico">🏰</div><div class="act-info"><strong>Lingayen Provincial Capitol</strong><small>Historic WWII landmark & museum, beautiful gardens — free entrance</small></div></div>
-          <div class="act"><div class="act-time">7:00 PM</div><div class="act-ico">💆</div><div class="act-info"><strong>Hilot Spa Package</strong><small>Unwind with traditional Filipino massage at our garden spa — add as extra!</small></div></div>
-        </div>
-      </div>
-
-      <!-- Day 3 -->
-      <div class="day-card">
-        <div class="day-hd" style="background:linear-gradient(135deg,#3a1a10,#5a2a0a)">
-          <span class="day-num-badge">Day 03</span>
-          <span class="day-title">Bolinao & Departure</span>
-          <span style="margin-left:auto;font-size:20px">🌊</span>
-        </div>
-        <div>
-          <div class="act"><div class="act-time">7:30 AM</div><div class="act-ico">☀️</div><div class="act-info"><strong>Early Morning Swim</strong><small>Take a final dip at the hotel pool or nearby beach before checking out</small></div></div>
-          <div class="act"><div class="act-time">9:30 AM</div><div class="act-ico">🌊</div><div class="act-info"><strong>Bolinao Falls & Patar Beach</strong><small>Crystal-clear tiered falls & white sand beach — stunning even on weekdays</small></div></div>
-          <div class="act"><div class="act-time">12:00 PM</div><div class="act-ico">🏯</div><div class="act-info"><strong>Cape Bolinao Lighthouse</strong><small>185-year-old lighthouse with panoramic views of the South China Sea</small></div></div>
-          <div class="act"><div class="act-time">3:00 PM</div><div class="act-ico">🛍️</div><div class="act-info"><strong>Pasalubong Shopping</strong><small>Grab bangus products, bagoong and native delicacies at Lingayen market</small></div></div>
-          <div class="act"><div class="act-time">5:00 PM</div><div class="act-ico">🚌</div><div class="act-info"><strong>Departure Transfer</strong><small>Our shuttle takes you to Dagupan Bus Terminal — add Airport Pickup add-on!</small></div></div>
-        </div>
-      </div>
-
-      <h2 class="sec-title" style="margin-top:8px">Nearby Attractions</h2>
-      <div style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:14px">All within reach of Andanian's Hotel</div>
-    </div>
-
-    <div class="attr-scroll">
-      <div class="acard"><div class="acard-img" style="background:linear-gradient(135deg,#0a2a4a,#0d4060)">🏝️</div><div class="acard-body"><div class="acard-name">Hundred Islands NP</div><div class="acard-meta">⏱ ~1 hr · ₱150 fee</div></div></div>
-      <div class="acard"><div class="acard-img" style="background:linear-gradient(135deg,#0a3a1a,#0d5025)">🌊</div><div class="acard-body"><div class="acard-name">Bolinao Falls</div><div class="acard-meta">⏱ ~2 hrs · ₱80</div></div></div>
-      <div class="acard"><div class="acard-img" style="background:linear-gradient(135deg,#3a2a0a,#5a3a10)">🏯</div><div class="acard-body"><div class="acard-name">Cape Bolinao Lighthouse</div><div class="acard-meta">⏱ ~2 hrs · Free</div></div></div>
-      <div class="acard"><div class="acard-img" style="background:linear-gradient(135deg,#1a0a3a,#2a1050)">🏰</div><div class="acard-body"><div class="acard-name">Lingayen Capitol</div><div class="acard-meta">⏱ 5 min · Free</div></div></div>
-      <div class="acard"><div class="acard-img" style="background:linear-gradient(135deg,#0a2a2a,#0d4040)">🐟</div><div class="acard-body"><div class="acard-name">Bonuan Fish Port</div><div class="acard-meta">⏱ 15 min · Free</div></div></div>
-      <div class="acard"><div class="acard-img" style="background:linear-gradient(135deg,#2a1a0a,#3a2a10)">⛪</div><div class="acard-body"><div class="acard-name">Manaoag Shrine</div><div class="acard-meta">⏱ ~30 min · Free</div></div></div>
-    </div>
-    <div style="height:36px"></div>
-  </div>
-</div>
-
-<!-- ============ SCREEN: ADMIN ============ -->
-<div class="screen" id="s-admin">
-  <!-- Login Gate -->
-  <div id="adm-gate">
-    <div style="background:linear-gradient(155deg,var(--deep),var(--navy));padding:50px 22px 32px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:-30px;right:-30px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.03)"></div>
-      <div style="font-family:'Yeseva One',serif;font-size:30px;color:white;line-height:1.1">Admin<br><em style="font-family:'DM Serif Display',serif;color:var(--gold3);font-style:italic">Dashboard</em></div>
-      <p style="font-size:13px;color:rgba(255,255,255,.55);margin-top:8px;line-height:1.6">Hotel Staff Access — Andanian's Hotel</p>
-      <div style="position:absolute;bottom:-1px;left:0;right:0"><svg viewBox="0 0 430 36" fill="none"><path d="M0,18 C80,36 160,0 215,18 C270,36 350,4 430,18 L430,36 L0,36 Z" fill="#f9f6f0"/></svg></div>
-    </div>
-    <div class="admin-login">
-      <div class="admin-av">👨‍💼</div>
-      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:6px">Staff Login</div>
-      <p style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:24px;line-height:1.6;max-width:280px">Enter your admin credentials to view all booking records</p>
-      <div class="fgroup">
-        <label class="flabel">Admin Password</label>
-        <input class="finput" type="password" id="adm-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')admLogin()">
-      </div>
-      <button class="btn" onclick="admLogin()" style="margin-top:8px">Login to Dashboard</button>
-      <div style="font-size:12px;color:var(--muted);margin-top:12px;font-weight:600">Demo: <strong>admin123</strong></div>
-    </div>
-  </div>
-
-  <!-- Dashboard -->
-  <div id="adm-dash" style="display:none;flex-direction:column;flex:1">
-    <div style="background:linear-gradient(135deg,var(--deep),var(--navy));padding:48px 18px 18px;color:white;position:relative">
-      <div style="font-family:'Yeseva One',serif;font-size:24px;color:white">Booking Dashboard</div>
-      <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:4px;font-weight:700">Andanian's Hotel · Pangasinan</div>
-      <button onclick="admLogout()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-xs);padding:7px 14px;font-size:12px;font-weight:800;color:white;cursor:pointer;font-family:'Nunito',sans-serif">Logout</button>
-      <div style="position:absolute;bottom:-1px;left:0;right:0"><svg viewBox="0 0 430 28" fill="none"><path d="M0,14 C80,28 160,0 215,14 C270,28 350,2 430,14 L430,28 L0,28 Z" fill="#f9f6f0"/></svg></div>
-    </div>
-    <div style="overflow-y:auto;flex:1;padding-bottom:calc(var(--tab) + 16px)">
-      <div class="stats-g" id="adm-stats">
-        <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">Total Bookings</div></div>
-        <div class="stat"><div class="stat-n" id="st-rev">₱0</div><div class="stat-l">Revenue</div></div>
-        <div class="stat"><div class="stat-n" id="st-guests">0</div><div class="stat-l">Total Guests</div></div>
-        <div class="stat"><div class="stat-n" id="st-nights">0</div><div class="stat-l">Nights Booked</div></div>
-      </div>
-      <div style="padding:4px 16px 10px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;justify-content:space-between">
-        <span>📋 All Booking Records</span>
-        <span id="adm-rec-count" style="color:var(--teal)">0 records</span>
-      </div>
-      <div id="adm-recs">
-        <div class="empty-state"><div class="empty-ico">📭</div><p>No bookings yet.<br>Records appear here once guests complete reservations.</p></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- BOTTOM NAV -->
-<nav class="bnav">
-  <button class="bnav-btn active" id="bn-home" onclick="nav('s-home')">
-    <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Rooms<div class="bnav-pip"></div>
-  </button>
-  <button class="bnav-btn" id="bn-itin" onclick="nav('s-itineraries')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    Explore<div class="bnav-pip"></div>
-  </button>
-  <!-- Center Book button -->
-  <div class="bnav-center-btn" onclick="if(currentRoom!=null)nav('s-booking');else showToast('Please select a room first 🛏️')">
-    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-  </div>
-  <button class="bnav-btn" id="bn-admin" onclick="goAdmin()">
-    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    Admin<div class="bnav-pip"></div>
-  </button>
-  <div style="flex:1"></div><!-- spacer for center btn -->
-</nav>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
+:root{--sky:#38bdf8;--sea:#0ea5e9;--deep:#0369a1;--navy:#0c4a6e;--aqua:#22d3ee;--sand:#fde68a;--coral:#fb7185;--ok:#10b981;--bg:#e0f7ff;--card:#fff;--tx:#0c2a3f;--mu:#5b7a8f;--bd:#bae6fd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#082f49;--card:#0b3d5c;--tx:#e8f7ff;--mu:#9cc7dd;--bd:#155e85}}
+:root[data-theme=dark]{--bg:#082f49;--card:#0b3d5c;--tx:#e8f7ff;--mu:#9cc7dd;--bd:#155e85}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:Poppins,system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:15px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:linear-gradient(90deg,var(--deep),var(--sea));color:#fff;box-shadow:0 4px 18px #0369a155}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;max-width:1200px;margin:auto}
+.logo{font-weight:800;font-size:19px;cursor:pointer;white-space:nowrap}.logo small{display:block;font-size:10px;font-weight:500;letter-spacing:.15em;opacity:.85}
+nav{display:flex;gap:4px;overflow-x:auto;padding:0 12px 8px;max-width:1200px;margin:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
+nav a{flex-shrink:0;color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:7px 13px;border-radius:99px;cursor:pointer;opacity:.9}
+nav a.on{background:#fff;color:var(--deep);opacity:1}nav a:hover{background:#ffffff30}nav a.on:hover{background:#fff}
+.tb{display:flex;gap:8px;align-items:center}.pill{background:#ffffff28;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:600}
+main{max-width:1200px;margin:auto;padding:18px 16px 80px}
+h1{font-size:26px;font-weight:800}h2{font-size:20px;font-weight:700;margin:18px 0 10px}h3{font-size:16px;font-weight:700}
+.mu{color:var(--mu);font-size:13px}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.sp{justify-content:space-between}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.g2{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:800px){.g2{grid-template-columns:2fr 1fr}}
+.card{background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:16px;box-shadow:0 4px 16px #0ea5e91a}
+.hero{background:linear-gradient(180deg,#38bdf8 0%,#7dd3fc 45%,#fde68a 100%);border-radius:26px;padding:34px 22px 90px;color:#fff;position:relative;overflow:hidden;margin-bottom:-60px}
+.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.05;text-shadow:0 2px 10px #0369a166}.hero p{max-width:520px;margin-top:10px;font-weight:500}
+.sun{position:absolute;right:30px;top:20px;width:80px;height:80px;border-radius:50%;background:#fff7c2;box-shadow:0 0 60px 20px #fff3a0aa}
+.wave{position:absolute;left:0;right:0;bottom:0;height:50px;background:radial-gradient(circle at 25px 0,transparent 24px,var(--bg) 25px) 0 0/50px 50px repeat-x}
+.search{position:relative;z-index:2;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));align-items:end;margin:0 8px}
+label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+input,select,textarea{width:100%;font:inherit;font-weight:500;padding:11px 12px;border:1.5px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--sea);box-shadow:0 0 0 3px #38bdf844}
+.btn{border:0;background:linear-gradient(135deg,var(--sea),var(--aqua));color:#fff;font:inherit;font-weight:700;padding:11px 18px;border-radius:12px;cursor:pointer;box-shadow:0 4px 12px #0ea5e955}
+.btn:active{transform:scale(.96)}.btn.o{background:transparent;color:var(--deep);border:2px solid var(--sea);box-shadow:none}.btn.r{background:var(--coral);box-shadow:none}.btn.g{background:var(--ok);box-shadow:none}.btn.s{padding:6px 11px;font-size:12px;border-radius:9px}.btn:disabled{opacity:.5}
+.room{padding:0;overflow:hidden}.rimg{height:130px;display:flex;align-items:center;justify-content:center;font-size:54px;background:linear-gradient(135deg,var(--sky),var(--aqua),var(--sand))}
+.rb{padding:14px}.price{font-size:22px;font-weight:800;color:var(--sea)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:#e0f2fe;color:var(--deep);margin:2px 3px 2px 0}
+.tag.ok{background:#d1fae5;color:#047857}.tag.no{background:#ffe4e6;color:#be123c}.tag.wa{background:#fef3c7;color:#92400e}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}th{font-size:11px;text-transform:uppercase;color:var(--mu)}
+.tw{overflow-x:auto;max-width:100%}
+.stat{text-align:center}.stat b{display:block;font-size:26px;color:var(--sea);font-weight:800}.stat span{font-size:11px;color:var(--mu);font-weight:600;text-transform:uppercase}
+.bar{height:12px;border-radius:9px;background:var(--bd);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--sea),var(--aqua))}
+.steps{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}.steps span{flex:1;min-width:70px;text-align:center;font-size:11px;font-weight:700;padding:7px;border-radius:99px;background:var(--bd);color:var(--mu)}.steps .d{background:var(--aqua);color:#fff}.steps .c{background:var(--sea);color:#fff}
+.pr{display:flex;justify-content:space-between;padding:6px 0;font-size:14px}.pr.t{border-top:2px solid var(--bd);margin-top:6px;font-size:18px;font-weight:800;color:var(--sea)}
+.f{margin-bottom:12px}.err{color:#be123c;font-weight:600;font-size:13px;margin:6px 0}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--navy);color:#fff;padding:11px 20px;border-radius:99px;font-weight:600;font-size:13px;z-index:200;transition:.3s;max-width:92vw;text-align:center}#toast.on{transform:translateX(-50%)}
+#modal{position:fixed;inset:0;background:#0c4a6e99;display:none;align-items:center;justify-content:center;z-index:150;padding:16px}#modal.on{display:flex}#modal .card{max-width:440px;width:100%;max-height:90vh;overflow:auto}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}.tabs a{padding:7px 15px;border-radius:99px;background:var(--card);border:1.5px solid var(--bd);font-weight:600;font-size:13px;cursor:pointer}.tabs a.on{background:var(--sea);color:#fff;border-color:var(--sea)}
+.empty{text-align:center;padding:36px 16px;color:var(--mu)}.empty b{display:block;font-size:40px}
+.qr{display:block;margin:10px auto;width:150px;height:150px;background:#fff;padding:8px;border-radius:12px;border:2px solid var(--bd)}
+.cal td{text-align:center;padding:6px 3px;font-size:11px}.cal .rs{background:#fde68a}.cal .oc{background:#7dd3fc}
+footer{background:var(--navy);color:#bae6fd;padding:26px 16px;text-align:center;font-size:13px;line-height:1.8;margin-top:30px;border-radius:20px}
+.sw{position:relative;width:42px;height:24px;background:var(--bd);border-radius:99px;cursor:pointer;flex-shrink:0}.sw.on{background:var(--ok)}.sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}.sw.on::after{left:21px}
+@media print{header,nav,#toast,.np{display:none!important}}
+</style></head><body>
+<header><div class="top"><div class="logo" onclick="go('home')">🌴 Andanian's Hotel<small>PANGASINAN · LINGAYEN GULF</small></div>
+<div class="tb"><span class="pill" id="who"></span><button class="btn s o" style="color:#fff;border-color:#fff" onclick="theme()">🌙</button></div></div><nav id="nav"></nav></header>
+<main id="app"></main><div id="modal" onclick="if(event.target===this)closeM()"><div class="card" id="mb"></div></div><div id="toast"></div>
 <script>
-// ============ DATA ============
-const ROOMS = [
-  {id:0,name:'Deluxe Room',    price:2800,cap:2,sqm:28,bg:'ra1',icon:'🛏️'},
-  {id:1,name:'Superior Room',  price:3800,cap:3,sqm:38,bg:'ra2',icon:'🌴'},
-  {id:2,name:'Family Suite',   price:5500,cap:5,sqm:58,bg:'ra3',icon:'👨‍👩‍👧‍👦'},
-  {id:3,name:'Presidential Suite',price:8500,cap:4,sqm:85,bg:'ra4',icon:'🌟'}
-];
-const ADDONS = {
-  tour:     {name:'Pangasinan Island Tour',price:(g,n)=>1000*g,  lbl:(g,n)=>`₱1,000 × ${g} guest${g>1?'s':''}`},
-  pickup:   {name:'Airport / Terminal Pickup',price:(g,n)=>600,  lbl:(g,n)=>'₱600 flat rate'},
-  breakfast:{name:'Breakfast Buffet',price:(g,n)=>380*g*n,       lbl:(g,n)=>`₱380 × ${g} × ${n} nights`},
-  spa:      {name:'Hilot Spa Package',price:(g,n)=>900*n,         lbl:(g,n)=>`₱900 × ${n} night${n>1?'s':''}`}
-};
-const PROMOS = {SUMMER10:.10,ANDA20:.20,WELCOME15:.15};
-const STEP_NAMES = ['📅 Select Dates','✨ Add-ons','👤 Guest Info','📋 Summary','💳 Payment'];
-
-// ============ STATE ============
-let currentRoom=null, step=0, guests=1, nights=0;
-let checkIn='',checkOut='';
-let addons=new Set();
-let gName='',gEmail='',gPhone='',gReq='';
-let promoCode='',promoRate=0;
-let payMethod=null;
-let grandTotal=0;
-let bookings=[];
-let refN=2000;
-let admAuth=false;
-
-// ============ SPLASH ============
-window.addEventListener('load',()=>{
-  // Generate particles
-  ['particles','hero-particles'].forEach(id=>{
-    const p=document.getElementById(id); if(!p)return;
-    for(let i=0;i<18;i++){
-      const d=document.createElement('div');
-      d.className='particle';
-      d.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*3}s;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;opacity:${.2+Math.random()*.4}`;
-      p.appendChild(d);
-    }
-  });
-  // Dismiss splash
-  setTimeout(()=>{
-    document.getElementById('splash').classList.add('hide');
-    setTimeout(()=>document.getElementById('splash').style.display='none',700);
-  },2200);
-});
-
-// ============ NAVIGATION ============
-const NAVMAP={'s-home':'bn-home','s-itineraries':'bn-itin','s-admin':'bn-admin'};
-function nav(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
-  if(NAVMAP[id]) document.getElementById(NAVMAP[id]).classList.add('active');
-  const hideNav=['s-confirm'].includes(id);
-  document.querySelector('.bnav').style.display=hideNav?'none':'flex';
-}
-
-// ============ ROOM SELECTION ============
-function pickRoom(id,el){
-  currentRoom=ROOMS[id];
-  guests=1; nights=0; checkIn='';checkOut=''; addons.clear(); promoCode='';promoRate=0; payMethod=null;
-  // Reset step UI
-  document.getElementById('d-rm-name').textContent=currentRoom.name;
-  document.getElementById('d-rm-price').textContent='₱'+currentRoom.price.toLocaleString()+' / night';
-  document.getElementById('d-maxcap').textContent=currentRoom.cap;
-  document.getElementById('d-rm-img').className='rm-img '+currentRoom.bg;
-  document.getElementById('d-rm-img').textContent=currentRoom.icon;
-  document.getElementById('gcount').textContent=1;
-  document.getElementById('ci').value='';
-  document.getElementById('co').value='';
-  const today=new Date().toISOString().split('T')[0];
-  document.getElementById('ci').min=today;
-  document.getElementById('co').min=today;
-  ['tour','pickup','breakfast','spa'].forEach(a=>{
-    const el=document.getElementById('ao-'+a);
-    if(el)el.classList.remove('sel');
-  });
-  document.getElementById('promo-inp').value='';
-  document.getElementById('promo-ok').style.display='none';
-  document.getElementById('promo-err').style.display='none';
-  document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));
-  document.getElementById('card-form').classList.remove('show');
-  document.getElementById('gcash-box').style.display='none';
-  document.getElementById('maya-box').style.display='none';
-  document.getElementById('pay-btn').disabled=true;
-  calcNights();
-  updateAddonLabels();
-  showStep(0);
-  nav('s-booking');
-  showToast('🛏️ '+currentRoom.name+' selected!');
-}
-
-// ============ STEP CONTROL ============
-function showStep(n){
-  for(let i=0;i<=5;i++){
-    const el=document.getElementById('sp'+i);
-    if(!el)continue;
-    el.style.display=(i===n)?(i===5?'flex':'block'):'none';
-  }
-  step=n;
-  if(n<=4){
-    document.getElementById('sbar-name').textContent=STEP_NAMES[n]||'';
-    document.getElementById('sbar-count').textContent=`Step ${n+1} / 5`;
-    document.querySelector('.sbar').style.display='block';
-    document.getElementById('crumbs').style.display='flex';
-    for(let i=0;i<5;i++){
-      const s=document.getElementById('ss'+i);
-      s.className='sseg'+(i<n?' done':i===n?' active':'');
-      const c=document.getElementById('cr'+i);
-      c.className='scrumb-dot'+(i<n?' done':i===n?' active':'');
-      if(i<4){
-        const cl=document.getElementById('cl'+i);
-        cl.className='scrumb-line'+(i<n?' done':'');
-      }
-    }
-  } else {
-    document.querySelector('.sbar').style.display='none';
-    document.getElementById('crumbs').style.display='none';
-  }
-}
-
-function nextS(){
-  if(step===0){
-    if(!checkIn||!checkOut||nights<1){showToast('⚠️ Please pick valid check-in & check-out dates');return;}
-    updateAddonLabels();
-    updateAddonTotal();
-  }
-  if(step===1){updateAddonTotal();}
-  if(step===2){
-    gName=document.getElementById('g-name').value.trim();
-    gEmail=document.getElementById('g-email').value.trim();
-    gPhone=document.getElementById('g-phone').value.trim();
-    gReq=document.getElementById('g-req').value.trim();
-    if(!gName){showToast('⚠️ Please enter your full name');return;}
-    if(!gEmail||!gEmail.includes('@')){showToast('⚠️ Please enter a valid email');return;}
-    buildSummary();
-  }
-  if(step===3){
-    document.getElementById('py-total').textContent='₱'+grandTotal.toLocaleString();
-  }
-  showStep(step+1);
-  const sp=document.getElementById('sp'+(step));
-  if(sp&&sp.scrollTop!==undefined)sp.scrollTop=0;
-}
-
-function prevS(){
-  if(step===0){nav('s-home');return;}
-  showStep(step-1);
-}
-
-// ============ DATES ============
-function calcNights(){
-  const ci=document.getElementById('ci').value;
-  const co=document.getElementById('co').value;
-  document.getElementById('dci').classList.toggle('has-val',!!ci);
-  document.getElementById('dco').classList.toggle('has-val',!!co);
-  if(ci&&co){
-    const n=Math.round((new Date(co)-new Date(ci))/86400000);
-    if(n>0){
-      nights=n; checkIn=ci; checkOut=co;
-      document.getElementById('np-n').textContent=n;
-      const sub=currentRoom?currentRoom.price*n:0;
-      document.getElementById('np-amt').textContent='₱'+sub.toLocaleString();
-    } else {
-      nights=0;
-      document.getElementById('np-n').textContent='0';
-      document.getElementById('np-amt').textContent='⚠️ invalid';
-    }
-  } else {
-    nights=0;
-    document.getElementById('np-n').textContent='0';
-    document.getElementById('np-amt').textContent='₱ —';
-  }
-}
-
-// ============ GUESTS ============
-function chGuest(d){
-  guests=Math.max(1,Math.min((guests+d),currentRoom?currentRoom.cap:10));
-  document.getElementById('gcount').textContent=guests;
-  updateAddonLabels();
-  updateAddonTotal();
-}
-
-// ============ ADDONS ============
-function togAddon(id){
-  addons.has(id)?addons.delete(id):addons.add(id);
-  document.getElementById('ao-'+id).classList.toggle('sel',addons.has(id));
-  updateAddonTotal();
-  showToast(addons.has(id)?'✓ '+ADDONS[id].name+' added':'Removed: '+ADDONS[id].name);
-}
-
-function updateAddonLabels(){
-  document.getElementById('ao-tour-lbl').textContent=ADDONS.tour.lbl(guests,nights);
-  document.getElementById('ao-bfast-lbl').textContent=ADDONS.breakfast.lbl(guests,nights);
-  document.getElementById('ao-spa-lbl').textContent=ADDONS.spa.lbl(guests,nights);
-}
-
-function addonAmt(id){return ADDONS[id].price(guests,nights);}
-
-function updateAddonTotal(){
-  let t=0; addons.forEach(id=>t+=addonAmt(id));
-  document.getElementById('ao-total').textContent='₱'+t.toLocaleString();
-}
-
-// ============ PROMO ============
-function applyPromo(){
-  const code=document.getElementById('promo-inp').value.trim().toUpperCase();
-  const ok=document.getElementById('promo-ok'),err=document.getElementById('promo-err');
-  if(PROMOS[code]){
-    promoCode=code; promoRate=PROMOS[code];
-    document.getElementById('promo-ok-txt').textContent=`"${code}" applied — ${(promoRate*100).toFixed(0)}% off room price!`;
-    ok.style.display='block'; err.style.display='none';
-    buildSummary();
-    showToast('🎉 Promo code applied!');
-  } else {
-    promoCode=''; promoRate=0;
-    ok.style.display='none'; err.style.display='block';
-    showToast('❌ Invalid promo code');
-    setTimeout(()=>err.style.display='none',3000);
-  }
-}
-
-// ============ SUMMARY ============
-function buildSummary(){
-  const r=currentRoom;
-  const rSub=r.price*nights;
-  let aoSub=0;
-  // room
-  document.getElementById('s-rm-img').className='rm-img '+r.bg;
-  document.getElementById('s-rm-img').textContent=r.icon;
-  document.getElementById('s-rm-nm').textContent=r.name;
-  document.getElementById('s-rm-meta').textContent=r.sqm+'m² · '+guests+' guest'+(guests>1?'s':'');
-  document.getElementById('s-rm-line').textContent='₱'+r.price.toLocaleString()+'/night';
-  document.getElementById('s-nights-val').textContent=nights+' night'+(nights>1?'s':'');
-  document.getElementById('s-rm-sub').textContent='₱'+rSub.toLocaleString();
-  // addons
-  let aoHtml='';
-  if(!addons.size) aoHtml='<div style="font-size:13px;color:var(--muted);font-weight:600">None selected</div>';
-  else addons.forEach(id=>{const p=addonAmt(id);aoSub+=p;aoHtml+=`<div class="price-row" style="font-size:13px"><span>${ADDONS[id].name}</span><span class="v">₱${p.toLocaleString()}</span></div>`;});
-  document.getElementById('s-addons-list').innerHTML=aoHtml;
-  // guest
-  document.getElementById('s-gname').textContent=gName;
-  document.getElementById('s-gemail').textContent=gEmail;
-  document.getElementById('s-gcount').textContent=guests+' guest'+(guests>1?'s':'');
-  // totals
-  const disc=Math.round(rSub*promoRate);
-  grandTotal=rSub+aoSub-disc;
-  document.getElementById('t-room').textContent='₱'+rSub.toLocaleString();
-  document.getElementById('t-addons').textContent='₱'+aoSub.toLocaleString();
-  if(disc>0){
-    document.getElementById('t-disc-row').style.display='flex';
-    document.getElementById('t-disc-lbl').textContent='Promo ('+promoCode+' −'+(promoRate*100).toFixed(0)+'%)';
-    document.getElementById('t-disc').textContent='−₱'+disc.toLocaleString();
-  } else document.getElementById('t-disc-row').style.display='none';
-  document.getElementById('t-total').textContent='₱'+grandTotal.toLocaleString();
-}
-
-// ============ PAYMENT ============
-function selPay(m){
-  payMethod=m;
-  document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));
-  document.getElementById('py-'+m).classList.add('sel');
-  document.getElementById('card-form').classList.toggle('show',m==='card');
-  document.getElementById('gcash-box').style.display=m==='gcash'?'block':'none';
-  document.getElementById('maya-box').style.display=m==='maya'?'block':'none';
-  document.getElementById('pay-btn').disabled=false;
-  document.getElementById('pay-btn').textContent={gcash:'Pay via GCash 📱',maya:'Pay via Maya 💚',card:'Pay via Card 💳'}[m]+' — ₱'+grandTotal.toLocaleString();
-}
-
-function fmtCard(el){let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();}
-function fmtExp(el){let v=el.value.replace(/\D/g,'');if(v.length>2)v=v.substring(0,2)+' / '+v.substring(2,4);el.value=v;}
-
-function doPay(){
-  if(payMethod==='card'){
-    const n=document.getElementById('cc-num').value.replace(/\s/g,'');
-    if(n.length<16){showToast('⚠️ Enter a valid 16-digit card number');return;}
-    if(!document.getElementById('cc-exp').value){showToast('⚠️ Enter card expiry');return;}
-  }
-  if(payMethod==='gcash'&&document.getElementById('gcash-num').value.trim().length<11){showToast('⚠️ Enter your GCash number');return;}
-  if(payMethod==='maya'&&document.getElementById('maya-num').value.trim().length<11){showToast('⚠️ Enter your Maya number');return;}
-
-  document.getElementById('sp4').style.display='none';
-  document.getElementById('sp5').style.display='flex';
-  document.querySelector('.sbar').style.display='none';
-  document.getElementById('crumbs').style.display='none';
-  // Animate proc messages
-  const msgs=['Verifying payment…','Checking availability…','Securing your reservation…','Almost done…'];
-  let mi=0;
-  const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('proc-msg').textContent=msgs[mi];},700);
-  setTimeout(()=>{clearInterval(iv);completeBooking();},3000);
-}
-
-// ============ COMPLETE BOOKING ============
-function completeBooking(){
-  refN++;
-  const ref='AND-'+String(refN).padStart(5,'0');
-  const aoNames=[...addons].map(a=>ADDONS[a].name);
-  const rec={ref,name:gName,email:gEmail,phone:gPhone,req:gReq,
-    room:currentRoom.name,roomId:currentRoom.id,roomBg:currentRoom.bg,roomIcon:currentRoom.icon,
-    checkIn,checkOut,nights,guests,addons:aoNames,promo:promoCode,
-    total:grandTotal,payMethod,
-    ts:new Date().toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'})
-  };
-  bookings.push(rec);
-  // Fill confirm
-  document.getElementById('c-ref').textContent=ref;
-  document.getElementById('c-name').textContent=gName;
-  document.getElementById('c-room').textContent=currentRoom.name;
-  document.getElementById('c-in').textContent=fmtD(checkIn);
-  document.getElementById('c-out').textContent=fmtD(checkOut);
-  document.getElementById('c-g').textContent=guests+' guest'+(guests>1?'s':'');
-  document.getElementById('c-ao').textContent=aoNames.length?aoNames.join(', '):'None';
-  document.getElementById('c-pay').textContent={gcash:'GCash 📱',maya:'Maya 💚',card:'Credit / Debit Card 💳'}[payMethod]||'—';
-  document.getElementById('c-total').textContent='₱'+grandTotal.toLocaleString();
-  nav('s-confirm');
-  showToast('🎉 Booking confirmed! Ref: '+ref);
-}
-
-function fmtD(s){
-  if(!s)return'—';
-  return new Date(s+'T00:00:00').toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});
-}
-
-// ============ ADMIN ============
-function goAdmin(){
-  nav('s-admin');
-  if(admAuth)renderAdmin();
-}
-
-function admLogin(){
-  const p=document.getElementById('adm-pass').value;
-  if(p==='admin123'){
-    admAuth=true;
-    document.getElementById('adm-gate').style.display='none';
-    const d=document.getElementById('adm-dash');d.style.display='flex';
-    renderAdmin();
-    showToast('👋 Welcome, Admin!');
-  } else {
-    showToast('❌ Wrong password');
-    document.getElementById('adm-pass').value='';
-    document.getElementById('adm-pass').focus();
-  }
-}
-
-function admLogout(){
-  admAuth=false;
-  document.getElementById('adm-gate').style.display='block';
-  document.getElementById('adm-dash').style.display='none';
-  document.getElementById('adm-pass').value='';
-  nav('s-home');
-  showToast('Logged out successfully');
-}
-
-function renderAdmin(){
-  const total=bookings.length;
-  const rev=bookings.reduce((s,b)=>s+b.total,0);
-  const tg=bookings.reduce((s,b)=>s+b.guests,0);
-  const tn=bookings.reduce((s,b)=>s+b.nights,0);
-  document.getElementById('st-total').textContent=total;
-  document.getElementById('st-rev').textContent=total?'₱'+rev.toLocaleString():'₱0';
-  document.getElementById('st-guests').textContent=tg;
-  document.getElementById('st-nights').textContent=tn;
-  document.getElementById('adm-rec-count').textContent=total+' record'+(total!==1?'s':'');
-  const cont=document.getElementById('adm-recs');
-  if(!total){
-    cont.innerHTML='<div class="empty-state"><div class="empty-ico">📭</div><p>No bookings recorded yet.<br>Complete a booking to see it here.</p></div>';
-    return;
-  }
-  cont.innerHTML=bookings.slice().reverse().map(b=>`
-    <div class="brec">
-      <div class="brec-hd">
-        <div>
-          <div class="brec-guest">${b.name}</div>
-          <div class="brec-room">${b.room} · ${b.nights} night${b.nights>1?'s':''}</div>
-        </div>
-        <div><div class="brec-amt">₱${b.total.toLocaleString()}</div><span class="status-chip sc-confirmed">✓ Confirmed</span></div>
-      </div>
-      <div class="brec-meta">
-        📅 ${fmtD(b.checkIn)} → ${fmtD(b.checkOut)}<br>
-        👤 ${b.guests} guest${b.guests>1?'s':''} &nbsp;·&nbsp; 📧 ${b.email}<br>
-        💳 ${{gcash:'GCash',maya:'Maya',card:'Credit/Debit Card'}[b.payMethod]||b.payMethod}${b.promo?' · 🏷️ '+b.promo:''}${b.phone?' · 📞 '+b.phone:''}
-      </div>
-      ${b.addons.length?`<div class="brec-tags">${b.addons.map(a=>`<span class="btag">${a}</span>`).join('')}</div>`:''}
-      ${b.req?`<div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:7px;line-height:1.5;background:var(--cream);border-radius:var(--r-xs);padding:8px 10px">💬 ${b.req}</div>`:''}
-      <div class="brec-ref">Ref: ${b.ref} &nbsp;·&nbsp; ${b.ts}</div>
-    </div>
-  `).join('');
-}
-
-// ============ TOAST ============
-let _tt;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),2600);
-}
-
-// ============ RIPPLE ============
-document.addEventListener('click',e=>{
-  const el=e.target.closest('.ripple');
-  if(!el)return;
-  const r=el.getBoundingClientRect();
-  const sz=Math.max(r.width,r.height)*2;
-  el.style.setProperty('--rr',sz/2+'px');
-  el.style.setProperty('--rx',(e.clientX-r.left)+'px');
-  el.style.setProperty('--ry',(e.clientY-r.top)+'px');
-  el.style.setProperty('--rw',sz+'px');
-  el.style.setProperty('--rh',sz+'px');
-  const s=el.style;
-  // simple approach: just flash opacity
-  el.style.transition='opacity .1s';
-  el.style.opacity='.85';
-  setTimeout(()=>{el.style.opacity='1';},100);
-});
-</script>
-</body>
-</html>
+const $=s=>document.querySelector(s),peso=n=>'₱'+Math.round(n).toLocaleString(),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const iso=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)},TD=iso(0);
+const fd=s=>s?new Date(s+'T00:00').toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'}):'—',nts=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+const T=[{id:'dlx',n:'Deluxe Room',p:2800,cap:2,bed:'Queen bed',e:'🛏️',am:['Aircon','Wi-Fi','Smart TV','Private bathroom','Garden view'],d:'A cozy garden-view room, perfect for couples.'},
+{id:'sup',n:'Superior Room',p:3800,cap:3,bed:'Queen + single',e:'🌴',am:['Aircon','Balcony','Wi-Fi','Mini fridge','Pool view'],d:'Spacious room with balcony overlooking the pool.'},
+{id:'fam',n:'Family Suite',p:5500,cap:5,bed:'2 bedrooms',e:'👨‍👩‍👧‍👦',am:['Aircon','Kitchenette','Sofa bed','Bathtub','Wi-Fi','Gulf view'],d:'Two bedrooms with a kitchenette and gulf views.'},
+{id:'pre',n:'Presidential Suite',p:8500,cap:4,bed:'King bed',e:'🌟',am:['Jacuzzi','Private terrace','Butler','Smart TV','Wi-Fi','Panoramic view'],d:'Our finest: panoramic gulf view, jacuzzi and butler.'}];
+let R=[101,102,103,104,105].map(n=>({no:n,t:'dlx',st:'Available'})).concat([201,202,203,204].map(n=>({no:n,t:'sup',st:n==204?'Maintenance':'Available'})),[301,302,303].map(n=>({no:n,t:'fam',st:'Available'}))[0]?[301,302,303].map(n=>({no:n,t:'fam',st:'Available'})):[],[{no:401,t:'pre',st:'Available'}]);
+let U=[{n:'Admin Maria',e:'admin@andanian.ph',r:'Admin',a:1,pw:'demo1234',c:'2026-01-10'},{n:'Staff Juan',e:'staff@andanian.ph',r:'Staff',a:1,pw:'demo1234',perm:['Payments','Walk-in','Rooms','Reports'],c:'2026-02-01'},{n:'Ana Reyes',e:'ana@mail.com',r:'Customer',a:1,pw:'demo1234',c:'2026-08-15'}];
+let P=[{c:'SUMMER10',pc:10,on:1,s:'2026-06-01',e:'2026-12-31'},{c:'ANDA20',pc:20,on:1,s:'2026-06-01',e:'2026-12-31'},{c:'WELCOME15',pc:15,on:1,s:'2026-01-01',e:'2026-12-31'}];
+let H={name:"Andanian's Hotel",desc:'Warm Filipino hospitality where the Lingayen Gulf meets your dream vacation.',addr:'Lingayen, Pangasinan',phone:'0917 000 0000',email:'hello@andanian.ph',am:'🌐 Free Wi-Fi, 🏊 Pool, 🍳 Restaurant, 🚗 Parking, 💆 Hilot Spa, 🌅 Gulf View, 🍹 Bar, 🕐 24/7 Staff',pol:'Check-in 2 PM · Check-out 12 NN · Free cancellation 48 hrs before arrival.'};
+let ST={cancelHrs:48,gcashNo:'0917 000 0000',gcashName:'Andanian Hotel',notif:1,tax:12};
+let B=[],LOG=[],N={Customer:[],Staff:[],Admin:[]},S={role:'Guest',user:null,page:'home',bk:{ci:iso(1),co:iso(3),ad:2,ch:0,rooms:1,t:''},tab:'Upcoming',sel:null,filt:'All',fp:0,ref:1020};
+const act=b=>!['Cancelled','Checked-out','Rejected'].includes(b.status);
+const free=(t,ci,co)=>R.filter(r=>r.t===t&&r.st!=='Maintenance'&&!B.some(b=>act(b)&&b.u.includes(r.no)&&b.ci<co&&b.co>ci));
+const log=m=>LOG.unshift({w:S.user?.n||'System',m,t:new Date().toLocaleString('en-PH')});
+const notify=(r,m)=>{N[r].unshift({m,t:new Date().toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'})})};
+function mk(o){const f=free(o.t,o.ci,o.co);if(f.length<o.rooms)return null;const b={...o,u:f.slice(0,o.rooms).map(r=>r.no),id:'AND-'+(++S.ref),status:o.status||'Pending',pay:o.pay||'Pending',ts:new Date().toLocaleString('en-PH')};B.push(b);return b}
+[['Ana Reyes','dlx',-1,2,'Approved','Checked-in'],['Ben Cruz','sup',1,4,'Approved','Confirmed'],['Cathy Lim','fam',0,2,'Pending','Pending'],['Dan Uy','dlx',3,6,'Approved','Confirmed']].forEach(([c,t,a,b,p,s])=>mk({cust:c,email:c.split(' ')[0].toLowerCase()+'@mail.com',phone:'0917123456',t,ci:iso(a),co:iso(b),ad:2,ch:0,rooms:1,total:T.find(x=>x.id===t).p*(b-a),pay:p,status:s,src:'Online',ref:'GC'+(a+9)+'778'}));
+const price=(t,ci,co,n=1,pc=0)=>{const r=T.find(x=>x.id===t).p*nts(ci,co)*n,d=r*pc/100,tx=(r-d)*ST.tax/100;return{r,d,tx,tot:r-d+tx}};
+const st=(cls,x)=>`<span class="tag ${cls}">${x}</span>`,bs=s=>st({Confirmed:'ok',Pending:'wa','Checked-in':'',Cancelled:'no','Checked-out':'',Approved:'ok',Paid:'ok',Rejected:'no'}[s]||'',s);
+const empty=(i,m)=>`<div class="empty"><b>${i}</b>${m}</div>`,tbl=(h,rows,em)=>rows.length?`<div class="tw"><table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div>`:empty('📭',em||'Nothing here yet.');
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+function M(h){$('#mb').innerHTML=h;$('#modal').classList.add('on')}function closeM(){$('#modal').classList.remove('on')}
+function theme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'}
+const NAV={Guest:[['home','🏠 Home'],['rooms','🛏️ Rooms'],['search','📅 Book'],['rec','✨ AI Pick'],['about','ℹ️ About'],['demo','🚨 Double-Booking Demo'],['login','🔐 Login']],
+Customer:[['home','🏠 Home'],['rooms','🛏️ Rooms'],['search','📅 Book'],['rec','✨ AI Pick'],['mine','📖 My Bookings'],['notes','🔔 Alerts'],['profile','👤 Profile'],['about','ℹ️ About'],['demo','🚨 Demo']],
+Staff:[['sdash','📊 Dashboard'],['sbook','📋 Bookings'],['pays','💳 Payments'],['walk','🚶 Walk-in'],['ci','🛎️ Check-in/out'],['srooms','🏨 Rooms'],['cal','📅 Calendar'],['rep','📈 Reports'],['notes','🔔 Alerts'],['demo','🚨 Demo']],
+Admin:[['adash','📊 Dashboard'],['sbook','📋 Bookings'],['pays','💳 Payments'],['walk','🚶 Walk-in'],['ci','🛎️ Check-in/out'],['srooms','🏨 Rooms'],['types','🛏️ Room Types'],['cal','📅 Calendar'],['users','👥 Users'],['staff','🧑‍💼 Staff'],['price','💵 Pricing'],['promos','🏷️ Promos'],['rep','📈 Reports'],['hotel','🏨 Hotel Info'],['sets','⚙️ Settings'],['audit','📝 Audit'],['notes','🔔 Alerts'],['demo','🚨 Demo']]};
+function go(p,x){if(x!==undefined)S.sel=x;S.page=p;closeM();render();scrollTo(0,0)}
+function render(){const PM={pays:'Payments',walk:'Walk-in',srooms:'Rooms',rep:'Reports'},nv=NAV[S.role].filter(([p])=>!(S.role==='Staff'&&PM[p]&&S.user.perm&&!S.user.perm.includes(PM[p])));$('#nav').innerHTML=nv.map(([p,l])=>`<a class="${S.page===p?'on':''}" onclick="go('${p}')">${l}</a>`).join('')+(S.role!=='Guest'?`<a onclick="logout()">🚪 Logout</a>`:'');
+$('#who').textContent=S.role==='Guest'?'👋 Guest':'👤 '+S.user.n+' · '+S.role;$('#app').innerHTML=(V[S.page]||V.home)()}
+function logout(){S.role='Guest';S.user=null;go('home');toast('Logged out')}
+const steps=n=>`<div class="steps">${['Search','Rooms','Guest','Summary','Payment','Done'].map((x,i)=>`<span class="${i<n?'d':i==n?'c':''}">${x}</span>`).join('')}</div>`;
+const roomCard=(t,ci,co)=>{const a=ci?free(t.id,ci,co).length:R.filter(r=>r.t===t.id&&r.st!=='Maintenance').length;return`<div class="card room"><div class="rimg">${t.e}</div><div class="rb"><div class="row sp"><h3>${t.n}</h3>${a?st('ok',a+' available'):st('no','Sold out')}</div><p class="mu">${t.bed} · up to ${t.cap} guests</p><div style="margin:8px 0">${t.am.slice(0,4).map(x=>st('',x)).join('')}</div><div class="row sp"><div><span class="price">${peso(t.p)}</span><span class="mu"> /night</span></div><div class="row"><button class="btn s o" onclick="go('room','${t.id}')">Details</button><button class="btn s" ${a?'':'disabled'} onclick="pick('${t.id}')">Book</button></div></div></div></div>`};
+function pick(t){S.bk.t=t;const ok=S.bk.ci&&S.bk.co&&nts(S.bk.ci,S.bk.co)>0;go(ok?'guest':'search')}
+const sform=()=>{const b=S.bk;return`<div class="card search"><div><label>Check-in</label><input type="date" id="ci" min="${TD}" value="${b.ci}"></div><div><label>Check-out</label><input type="date" id="co" min="${TD}" value="${b.co}"></div><div><label>Adults</label><input type="number" id="ad" min="1" max="10" value="${b.ad}"></div><div><label>Children</label><input type="number" id="ch" min="0" max="10" value="${b.ch}"></div><div><label>Rooms</label><input type="number" id="rm" min="1" max="5" value="${b.rooms}"></div><div><label>Room preference</label><select id="rpf"><option value="">Any</option>${T.map(t=>`<option value="${t.id}"${b.pref===t.id?' selected':''}>${t.n}</option>`).join('')}</select></div><button class="btn" onclick="doSearch()">🔍 Search Availability</button></div>`};
+function doSearch(){const b=S.bk;b.ci=$('#ci').value;b.co=$('#co').value;b.ad=+$('#ad').value||1;b.ch=+$('#ch').value||0;b.rooms=+$('#rm').value||1;b.pref=$('#rpf').value;
+if(!b.ci||!b.co)return toast('⚠️ Pick both dates');if(b.ci<TD)return toast('⚠️ Check-in cannot be in the past');if(nts(b.ci,b.co)<1)return toast('⚠️ Check-out must be after check-in');go('avail')}
+const V={
+home(){return`<div class="hero"><div class="sun"></div><span class="tag" style="background:#ffffff55;color:#fff">⭐ 4.9 · Lingayen Gulf</span><h1 style="margin-top:10px">Sun, sea &amp;<br>island time at ${esc(H.name)}</h1><p>${esc(H.desc)}</p><div class="row" style="margin-top:16px"><button class="btn" style="background:#fff;color:var(--deep)" onclick="go('search')">Book Now</button><button class="btn o" style="color:#fff;border-color:#fff" onclick="go('rooms')">View Rooms</button>${S.role==='Guest'?`<button class="btn o" style="color:#fff;border-color:#fff" onclick="go('signup')">Create Account</button>`:''}</div><div class="wave"></div></div>${sform()}
+<h2>Featured Rooms</h2><div class="grid">${T.map(t=>roomCard(t)).join('')}</div>
+<h2>Amenities</h2><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(110px,1fr))">${H.am.split(',').filter(x=>x.trim()).map(x=>{x=x.trim();return[x.split(' ')[0],x.split(' ').slice(1).join(' ')]}).map(a=>`<div class="card stat" style="padding:12px"><div style="font-size:28px">${a[0]}</div><span>${a[1]}</span></div>`).join('')}</div>
+<h2>Why Andanian's?</h2><div class="grid"><div class="card">🏝️ <b>Near Hundred Islands</b><p class="mu">Gateway to island hopping &amp; Bolinao.</p></div><div class="card">✅ <b>Real-time availability</b><p class="mu">No double bookings — ever.</p></div><div class="card">📱 <b>Pay with GCash</b><p class="mu">Scan the QR, upload proof, done.</p></div></div>${V.about(1)}`},
+about(m){return`${m?'':'<h1>About &amp; Contact</h1>'}<footer><b style="color:#fff;font-size:16px">${esc(H.name)}</b><br>📍 ${esc(H.addr)}<br>📞 ${esc(H.phone)} · ✉️ ${esc(H.email)}<br>${esc(H.pol)}<br>© 2026 ${esc(H.name)}</footer>`},
+rooms(){return`<h1>Rooms &amp; Accommodation</h1><p class="mu" style="margin-bottom:12px">Choose your perfect stay.</p><div class="grid">${T.map(t=>roomCard(t)).join('')}</div>`},
+room(){const t=T.find(x=>x.id===S.sel)||T[0];return`<button class="btn s o" onclick="go('rooms')">← Back to Rooms</button><div class="g2" style="margin-top:12px"><div class="card room"><div class="rimg" style="height:220px;font-size:90px">${t.e}</div><div class="rb"><h1>${t.n}</h1><p style="margin:8px 0">${t.d}</p><div>${t.am.map(x=>st('',x)).join('')}</div><h3 style="margin-top:14px">House rules</h3><p class="mu">${esc(H.pol)} No smoking. Quiet hours 10 PM–6 AM.</p><h3 style="margin-top:10px">Cancellation policy</h3><p class="mu">Free cancellation up to ${ST.cancelHrs} hours before check-in.</p></div></div><div class="card"><div class="price">${peso(t.p)}<span class="mu"> /night</span></div><p class="mu">${t.bed} · max ${t.cap} guests</p><p style="margin:8px 0">${st('ok',R.filter(r=>r.t===t.id&&r.st!=='Maintenance').length+' rooms in inventory')}</p><button class="btn" style="width:100%" onclick="pick('${t.id}')">Book This Room</button></div></div>`},
+search(){return steps(0)+`<h1>Search Availability</h1><p class="mu" style="margin:6px 0 14px">Tell us your dates and guests.</p>${sform()}`},
+avail(){const b=S.bk,n=nts(b.ci,b.co),g=b.ad+b.ch;const l=T.map(t=>({t,a:free(t.id,b.ci,b.co).length})).filter(x=>x.a>0&&x.t.cap*b.rooms>=g);
+return steps(1)+`<div class="row sp"><div><h1>Available Rooms</h1><p class="mu">${fd(b.ci)} → ${fd(b.co)} · ${n} night${n>1?'s':''} · ${g} guest${g>1?'s':''} · ${b.rooms} room${b.rooms>1?'s':''}</p></div><button class="btn o" onclick="go('search')">Modify Search</button></div>`+(l.length?rc(l,b,g)+`<div class="grid" style="margin-top:12px">${l.map(({t,a})=>`<div class="card room"><div class="rimg">${t.e}</div><div class="rb"><h3>${t.n}</h3><p class="mu">${a} left · ${t.bed}</p><div class="pr"><span>${peso(t.p)} × ${n}n × ${b.rooms}</span><b>${peso(price(t.id,b.ci,b.co,b.rooms).r)}</b></div><button class="btn" style="width:100%" ${a<b.rooms?'disabled':''} onclick="S.bk.t='${t.id}';go('guest')">Select Room</button></div></div>`).join('')}</div>`:empty('😢','No rooms available for those dates or guest count.<br><br><button class="btn" onclick="go(\'search\')">Modify Search</button>'))},
+guest(){const b=S.bk,u=S.user||{};return steps(2)+`<h1>Guest Information</h1><div class="g2" style="margin-top:12px"><div class="card"><div class="f"><label>Full name</label><input id="gn" value="${esc(b.name||u.n||'')}"></div><div class="f"><label>Email</label><input id="ge" type="email" value="${esc(b.email||u.e||'')}"></div><div class="f"><label>Contact number</label><input id="gp" type="tel" value="${esc(b.phone||u.ph||'')}"></div><div class="f"><label>Address</label><input id="ga" value="${esc(b.addr||u.ad||'')}"></div><div class="f"><label>Special requests (optional)</label><textarea id="gr" rows="2">${esc(b.req||'')}</textarea></div><div id="ger" class="err"></div><div class="row"><button class="btn o" onclick="go('avail')">Back</button><button class="btn" onclick="gNext()">Continue</button></div></div><div class="card">${brief()}</div></div>`},
+summary(){const b=S.bk,p=price(b.t,b.ci,b.co,b.rooms,b.pc||0),t=T.find(x=>x.id===b.t);return steps(3)+`<h1>Booking Summary</h1><div class="g2" style="margin-top:12px"><div class="card">${brief()}<div class="pr"><span>Room rate</span><span>${peso(t.p)} / night</span></div><div class="pr"><span>Room total</span><span>${peso(p.r)}</span></div>${p.d?`<div class="pr" style="color:var(--ok)"><span>Discount (${b.promo} ${b.pc}%)</span><span>−${peso(p.d)}</span></div>`:''}<div class="pr"><span>Taxes &amp; fees (${ST.tax}%)</span><span>${peso(p.tx)}</span></div><div class="pr t"><span>Grand Total</span><span>${peso(p.tot)}</span></div></div><div class="card"><label>Promo code</label><div class="row"><input id="pc" style="flex:1" placeholder="e.g. SUMMER10" value="${esc(b.promo||'')}"><button class="btn s" onclick="applyPromo()">Apply</button></div><p class="mu" style="margin:8px 0 14px">Try SUMMER10 · ANDA20 · WELCOME15</p><div class="row"><button class="btn o" onclick="go('guest')">Edit Booking</button><button class="btn" onclick="go('pay')">Proceed to Payment</button></div></div></div>`},
+pay(){const b=S.bk,p=price(b.t,b.ci,b.co,b.rooms,b.pc||0);let q='';for(let y=0;y<21;y++)for(let x=0;x<21;x++){const f=(x<7&&y<7)||(x>13&&y<7)||(x<7&&y>13);const on=f?((x%6==0||y%6==0||x%6==6||(x>1&&x<5&&y>1&&y<5)||(x>15&&x<19&&y>1&&y<5)||(x>1&&x<5&&y>15&&y<19))&&!(x==7||y==7)):((x*7+y*13+x*y)%3==0);if(on)q+=`<rect x="${x}" y="${y}" width="1" height="1"/>`}
+return steps(4)+`<h1>Payment</h1><div class="g2" style="margin-top:12px"><div class="card"><h3>💙 GCash</h3><svg class="qr" viewBox="0 0 21 21" fill="#0c4a6e">${q}</svg><p style="text-align:center"><b>${esc(ST.gcashName)}</b><br>${esc(ST.gcashNo)}</p><div class="pr t"><span>Amount to pay</span><span>${peso(p.tot)}</span></div><div class="f"><label>GCash reference number</label><input id="rf" placeholder="13-digit reference"></div><div class="f"><label>Upload proof of payment</label><input type="file" id="pf" accept="image/*"></div><div id="per" class="err"></div><div class="row"><button class="btn o" onclick="go('summary')">Cancel</button><button class="btn" onclick="submitPay()">Submit Payment</button></div></div><div class="card">${brief()}<p class="mu">Your room is re-checked for availability when you submit. Staff verifies your payment, then your booking is confirmed.</p></div></div>`},
+confirm(){const b=B.find(x=>x.id===S.sel);if(!b)return empty('❓','Booking not found');const ok=b.status==='Confirmed'||b.status==='Checked-in';
+return`<div class="card" style="max-width:600px;margin:auto;text-align:center"><div style="font-size:54px">${ok?'🎉':b.status==='Cancelled'?'❌':'⏳'}</div><h1>${ok?'Booking Confirmed!':b.status==='Cancelled'?'Booking Cancelled':'Payment Submitted'}</h1><p class="mu">${ok?'See you at the beach!':b.status==='Cancelled'?'This booking is no longer active.':'Payment verification: pending. Confirmation sent to your registered email.'}</p><div style="font-size:26px;font-weight:800;color:var(--sea);margin:12px 0;letter-spacing:.08em">${b.id}</div><div style="text-align:left">${[['Guest',esc(b.cust)],['Room',T.find(x=>x.id===b.t).n+' × '+b.rooms+' ('+b.u.join(', ')+')'],['Check-in',fd(b.ci)],['Check-out',fd(b.co)],['Guests',b.ad+b.ch],['Payment',bs(b.pay)],['Booking status',bs(b.status)],['Date submitted',b.ts]].concat(b.refund?[['Refund',b.refund]]:[]).map(r=>`<div class="pr"><span class="mu">${r[0]}</span><b>${r[1]}</b></div>`).join('')}<div class="pr t"><span>Total</span><span>${peso(b.total)}</span></div></div><div class="row np" style="justify-content:center;margin-top:12px"><button class="btn" onclick="print()">🖨️ Download / Print</button><button class="btn o" onclick="go('mine')">My Bookings</button><button class="btn o" onclick="go('home')">Back Home</button></div></div>`},
+mine(){if(S.role!=='Customer')return V.login('Please log in to see your bookings.');const mb=B.filter(b=>b.email===S.user.e);const f={Upcoming:b=>['Pending','Confirmed','Checked-in'].includes(b.status),Completed:b=>b.status==='Checked-out',Cancelled:b=>['Cancelled','Rejected'].includes(b.status)}[S.tab];const l=mb.filter(f);
+return`<h1>My Bookings</h1><div class="tabs" style="margin-top:12px">${['Upcoming','Completed','Cancelled'].map(t=>`<a class="${S.tab===t?'on':''}" onclick="S.tab='${t}';render()">${t}</a>`).join('')}</div>`+(l.length?`<div class="grid">${l.map(b=>`<div class="card"><div class="row sp"><b>${b.id}</b>${bs(b.status)}</div><p>${T.find(x=>x.id===b.t).n}</p><p class="mu">${fd(b.ci)} → ${fd(b.co)}</p>${b.pay==='Rejected'?`<p class="err">Payment rejected: ${esc(b.rej)}</p>`:''}${b.refund?`<p class="mu">Refund: ${b.refund}</p>`:''}<div class="row sp" style="margin:8px 0"><b>${peso(b.total)}</b>${bs(b.pay)}</div><div class="row"><button class="btn s" onclick="go('confirm','${b.id}')">View Details</button>${b.pay==='Rejected'?`<button class="btn s g" onclick="resub('${b.id}')">Resubmit payment</button>`:''}${['Pending','Confirmed'].includes(b.status)?`<button class="btn s r" onclick="askCancel('${b.id}')">Cancel</button>`:''}</div></div>`).join('')}</div>`:empty('🏖️','No '+S.tab.toLowerCase()+' bookings.<br><br><button class="btn" onclick="go(\'search\')">Book a stay</button>'))},
+rec(){const r=S.recR;return`<h1>✨ AI Room Recommendation</h1><p class="mu" style="margin:6px 0 12px">Tell us about your trip and we'll suggest the best-fit room. (A smart recommender, not a chatbot.)</p><div class="g2"><div class="card"><div class="f"><label>Guests</label><input id="rg" type="number" min="1" max="10" value="4"></div><div class="f"><label>Nights</label><input id="rn" type="number" min="1" value="3"></div><div class="f"><label>Budget per night (₱)</label><input id="rb" type="number" value="6000"></div><div class="f"><label>Preferences</label>${[['Kitchen/kitchenette','Kitchenette'],['Great view','view'],['Luxury / jacuzzi','Jacuzzi'],['Balcony','Balcony'],['Bathtub','Bathtub']].map(x=>`<label style="text-transform:none;display:flex;gap:6px;margin:4px 0"><input type="checkbox" class="rp" value="${x[1]}" style="width:auto"> ${x[0]}</label>`).join('')}</div><button class="btn" onclick="recommend()">Recommend</button></div><div>${r?r:`<div class="card empty"><b>🧭</b>Your recommendation appears here.</div>`}</div></div>`},
+notes(){const l=N[S.role==='Guest'?'Customer':S.role];return`<h1>🔔 Notifications</h1><div style="margin-top:12px">${l.length?l.map(n=>`<div class="card" style="margin-bottom:8px;padding:12px"><div class="row sp"><span>${n.m}</span><span class="mu">${n.t}</span></div></div>`).join(''):empty('🔕','No notifications yet.')}</div>`},
+profile(){if(S.role!=='Customer')return V.login('Log in to view your profile.');const u=S.user;return`<h1>👤 My Profile</h1><div class="g2" style="margin-top:12px"><div class="card"><h3>Personal information</h3>${[['pn','Full name',u.n],['pe','Email',u.e],['pph','Contact number',u.ph||''],['pa','Address',u.ad||'']].map(f=>`<div class="f"><label>${f[1]}</label><input id="${f[0]}" value="${esc(f[2])}"></div>`).join('')}<button class="btn" onclick="saveProf()">Save Changes</button></div><div class="card"><h3>🔐 Change password</h3><div class="f"><label>Current</label><input type="password" id="p1"></div><div class="f"><label>New</label><input type="password" id="p2"></div><div class="f"><label>Confirm</label><input type="password" id="p3"></div><button class="btn" onclick="chPw()">Update Password</button></div></div>`},
+login(m){return`<div class="card" style="max-width:420px;margin:20px auto"><h1>🔐 Login</h1><p class="mu" style="margin:6px 0 12px">${m||'Welcome back!'}</p><div class="f"><label>Email</label><input id="le" type="email" placeholder="you@mail.com"></div><div class="f"><label>Password</label><input id="lp" type="password"></div><label style="text-transform:none;display:flex;gap:6px"><input type="checkbox" style="width:auto"> Remember me</label><div id="lerr" class="err"></div><button class="btn" style="width:100%" onclick="doLogin()">Login</button><p style="margin-top:12px;font-size:13px"><a href="#" onclick="go('forgot');return false">Forgot password?</a> · <a href="#" onclick="go('signup');return false">Create account</a></p><div class="card" style="margin-top:12px;background:var(--bg)"><b>Demo logins</b> (password: demo1234):<div class="row" style="margin-top:6px"><button class="btn s o" onclick="quick('ana@mail.com')">Customer</button><button class="btn s o" onclick="quick('staff@andanian.ph')">Staff</button><button class="btn s o" onclick="quick('admin@andanian.ph')">Admin</button></div></div></div>`},
+signup(){return`<div class="card" style="max-width:420px;margin:20px auto"><h1>Sign Up</h1>${[['sn','Full name'],['se','Email'],['sp','Contact number'],['s1','Password'],['s2','Confirm password']].map(f=>`<div class="f"><label>${f[1]}</label><input id="${f[0]}" ${f[0][0]=='s'&&f[0][1]>='1'?'type="password"':''}></div>`).join('')}<label style="text-transform:none;display:flex;gap:6px"><input type="checkbox" id="st" style="width:auto"> I accept the Terms &amp; Conditions</label><div id="serr" class="err"></div><button class="btn" style="width:100%" onclick="doSignup()">Create Account</button></div>`},
+forgot(){return`<div class="card" style="max-width:420px;margin:20px auto"><h1>Forgot Password</h1><div class="f"><label>Email</label><input id="fe" type="email"></div>${S.fp?`<p class="mu">📧 Reset code sent (demo: 1234).</p><div class="f"><label>New password</label><input type="password" id="f1"></div><div class="f"><label>Confirm password</label><input type="password" id="f2"></div><button class="btn" onclick="toast('✅ Password reset. Please log in.');S.fp=0;go('login')">Reset Password</button>`:`<button class="btn" onclick="if(!$('#fe').value.includes('@'))return toast('⚠️ Enter a valid email');S.fp=1;render()">Send reset link</button>`}</div>`},
+demo(){return`<h1>🚨 Double-Booking Prevention</h1><p class="mu" style="margin:6px 0 12px">The Presidential Suite has only 1 room. Two customers try to book the same dates at the same time.</p><div class="card"><div class="row"><div><label>Same dates</label><div class="row"><input type="date" id="dd1" value="${iso(20)}"><input type="date" id="dd2" value="${iso(22)}"></div></div><button class="btn" onclick="runDemo()">▶ Run simulation</button></div><div id="demo" style="margin-top:14px"></div></div>`},
+sdash(){const a=B.filter(act),tb=B.filter(b=>b.ts.length&&b.status!=='Cancelled');return`<h1>📊 Staff Dashboard</h1>${stats()}<h2>Booking status</h2><div class="card">${['Pending','Confirmed','Checked-in','Checked-out','Cancelled'].map(s=>{const c=B.filter(b=>b.status===s).length;return`<div class="row" style="margin:6px 0"><span style="width:100px;font-size:13px">${s}</span><div class="bar" style="flex:1"><i style="width:${B.length?c/B.length*100:0}%"></i></div><b>${c}</b></div>`}).join('')}</div><h2>Room occupancy</h2>${occBars()}`},
+adash(){const rev=B.filter(b=>['Approved','Paid'].includes(b.pay)).reduce((s,b)=>s+b.total,0);return`<h1>👑 Admin Dashboard</h1>${stats()}<div class="grid" style="margin-top:14px"><div class="card stat"><b>${peso(rev)}</b><span>Revenue</span></div><div class="card stat"><b>${B.length}</b><span>Total bookings</span></div><div class="card stat"><b>${U.filter(u=>u.r==='Customer').length}</b><span>Customers</span></div></div><h2>Popular room types</h2><div class="card">${T.map(t=>{const c=B.filter(b=>b.t===t.id).length;return`<div class="row" style="margin:6px 0"><span style="width:130px;font-size:13px">${t.n}</span><div class="bar" style="flex:1"><i style="width:${B.length?c/B.length*100:0}%"></i></div><b>${c}</b></div>`}).join('')}</div><h2>Booking sources</h2><div class="card">${['Online','Walk-in'].map(s=>`<div class="pr"><span>${s}</span><b>${B.filter(b=>b.src===s).length}</b></div>`).join('')}</div><h2>Occupancy</h2>${occBars()}<h2>Booking trend (by check-in)</h2><div class="card">${Array.from({length:7},(_,i)=>{const d=iso(i-2),c=B.filter(b=>b.ci===d&&b.status!=='Cancelled'),m=Math.max(1,B.length);return`<div class="row" style="margin:6px 0"><span style="width:100px;font-size:13px">${fd(d)}</span><div class="bar" style="flex:1"><i style="width:${c.length/m*100}%"></i></div><b>${c.length}</b><span class="mu">${peso(c.reduce((s,b)=>s+b.total,0))}</span></div>`}).join('')}</div>`},
+sbook(){const l=B.filter(b=>S.filt==='All'||b.status===S.filt).filter(b=>!S.q||(b.id+b.cust).toLowerCase().includes(S.q.toLowerCase())).sort((a,b)=>S.so==='ci'?a.ci.localeCompare(b.ci):S.so==='amt'?b.total-a.total:0);return`<h1>📋 Booking Management</h1><div class="row" style="margin:12px 0"><input style="max-width:240px" placeholder="🔍 Search name or ID" value="${esc(S.q||'')}" oninput="S.q=this.value;render();this.focus()"><select style="max-width:170px" onchange="S.filt=this.value;render()">${['All','Pending','Confirmed','Checked-in','Checked-out','Cancelled'].map(s=>`<option ${S.filt===s?'selected':''}>${s}</option>`).join('')}</select><select style="max-width:170px" onchange="S.so=this.value;render()"><option value="">Sort: Newest</option><option value="ci"${S.so==='ci'?' selected':''}>Sort: Check-in</option><option value="amt"${S.so==='amt'?' selected':''}>Sort: Amount</option></select></div><div class="card">${tbl(['ID','Customer','Room','Check-in','Check-out','Payment','Status','Actions'],(S.so?l:l.slice().reverse()).map(b=>[b.id,esc(b.cust),T.find(x=>x.id===b.t).n,fd(b.ci),fd(b.co),bs(b.pay),bs(b.status),`<button class="btn s o" onclick="bdet('${b.id}')">View</button>${act(b)?` <button class="btn s o" onclick="editB('${b.id}')">Edit</button>`:''}${b.status==='Confirmed'?` <button class="btn s" onclick="setSt('${b.id}','Checked-in')">Check-in</button>`:''}${b.status==='Checked-in'?` <button class="btn s g" onclick="setSt('${b.id}','Checked-out')">Check-out</button>`:''}${b.status==='Pending'?` <button class="btn s g" onclick="approve('${b.id}')">Confirm</button>`:''}${act(b)?` <button class="btn s r" onclick="staffCancel('${b.id}')">Cancel</button>`:''}`]),'No bookings.')}</div>`},
+pays(){const l=B.filter(b=>b.pay==='Pending');return`<h1>💳 Payment Verification</h1><div class="card" style="margin-top:12px">${tbl(['Booking','Customer','Amount','Reference','Proof','Actions'],l.map(b=>[b.id,esc(b.cust),peso(b.total),esc(b.ref||'—'),b.proof?'🧾 '+esc(b.proof):'—',`<button class="btn s g" onclick="approve('${b.id}')">Approve</button> <button class="btn s r" onclick="rejM('${b.id}')">Reject</button>`]),'No pending payments 🎉')}</div>`},
+walk(){return`<h1>🚶 Walk-in Booking</h1><div class="card" style="margin-top:12px;max-width:560px">${[['wn','Customer name'],['wc','Contact']].map(f=>`<div class="f"><label>${f[1]}</label><input id="${f[0]}"></div>`).join('')}<div class="f"><label>Room</label><select id="wt">${T.map(t=>`<option value="${t.id}">${t.n} — ${peso(t.p)} (${free(t.id,TD,iso(1)).length} free tonight)</option>`).join('')}</select></div><div class="frow row"><div style="flex:1"><label>Check-in</label><input type="date" id="wi" value="${TD}"></div><div style="flex:1"><label>Check-out</label><input type="date" id="wo" value="${iso(1)}"></div></div><div class="row" style="margin:12px 0"><div style="flex:1"><label>Guests</label><input type="number" id="wg" value="2" min="1"></div><div style="flex:1"><label>Payment method</label><select id="wm"><option>Cash</option><option>GCash</option><option>Card</option></select></div></div><div id="wer" class="err"></div><button class="btn" onclick="doWalk()">Check availability &amp; Confirm</button></div>`},
+ci(){const a=B.filter(b=>b.status==='Confirmed'&&b.ci<=TD),o=B.filter(b=>b.status==='Checked-in');return`<h1>🛎️ Check-in / Check-out</h1><h2>Today's arrivals</h2><div class="card">${tbl(['Booking','Guest','Room','Action'],a.map(b=>[b.id,esc(b.cust),b.u.join(', '),`<button class="btn s" onclick="setSt('${b.id}','Checked-in')">Check-in</button>`]),'No arrivals today.')}</div><h2>In-house / departures</h2><div class="card">${tbl(['Booking','Guest','Room','Balance','Action'],o.map(b=>[b.id,esc(b.cust),b.u.join(', '),b.pay==='Approved'||b.pay==='Paid'?'₱0':peso(b.total),`<button class="btn s g" onclick="setSt('${b.id}','Checked-out')">Check-out</button>`]),'No guests in-house.')}</div>`},
+srooms(){return`<h1>🏨 Room Management</h1><div class="card" style="margin:12px 0">${tbl(['Room','Type','Capacity','Price','Status','Actions'],R.map(r=>{const t=T.find(x=>x.id===r.t),cur=B.some(b=>b.status==='Checked-in'&&b.u.includes(r.no))?'Occupied':B.some(b=>b.status==='Confirmed'&&b.u.includes(r.no)&&b.ci<=TD&&b.co>TD)?'Reserved':r.st;return[r.no,t.n,t.cap,peso(t.p),st(cur==='Available'?'ok':cur==='Maintenance'?'no':'wa',cur),`<select onchange="R.find(x=>x.no==${r.no}).t=this.value;log('Room ${r.no} type changed');render()">${T.map(t=>`<option value="${t.id}"${t.id===r.t?' selected':''}>${t.n}</option>`).join('')}</select> <select onchange="R.find(x=>x.no==${r.no}).st=this.value;log('Room ${r.no} set to '+this.value);render()"><option${r.st=='Available'?' selected':''}>Available</option><option${r.st=='Maintenance'?' selected':''}>Maintenance</option></select> <button class="btn s r" onclick="R=R.filter(x=>x.no!=${r.no});log('Removed room ${r.no}');render()">Remove</button>`]}))}</div><div class="card row"><input id="nr" type="number" placeholder="Room no." style="max-width:120px"><select id="nt" style="max-width:180px">${T.map(t=>`<option value="${t.id}">${t.n}</option>`).join('')}</select><button class="btn" onclick="const n=+$('#nr').value;if(!n||R.some(r=>r.no==n))return toast('⚠️ Enter a unique room number');R.push({no:n,t:$('#nt').value,st:'Available'});log('Added room '+n);render()">+ Add room</button></div>`},
+cal(){const d=Array.from({length:14},(_,i)=>iso(i));return`<h1>📅 Reservation Calendar</h1><p class="mu">Next 14 days · <span class="tag wa">Reserved</span><span class="tag">Occupied</span></p><div class="card cal" style="margin-top:10px"><div class="tw"><table><tr><th>Room</th>${d.map(x=>`<th>${x.slice(8)}</th>`).join('')}</tr>${R.map(r=>`<tr><td><b>${r.no}</b></td>${d.map(x=>{const b=B.find(b=>act(b)&&b.u.includes(r.no)&&b.ci<=x&&b.co>x);return`<td class="${b?(b.status==='Checked-in'?'oc':'rs'):''}" title="${b?esc(b.cust):''}">${r.st==='Maintenance'?'🔧':b?'●':''}</td>`}).join('')}</tr>`).join('')}</table></div></div>`},
+rep(){const rt=S.rt||'Booking',f=S.rf||iso(-30),to=S.rto||iso(30),l=B.filter(b=>b.ci<=to&&b.co>=f),paid=b=>['Approved','Paid'].includes(b.pay),rn=b=>T.find(x=>x.id===b.t).n;let body='';
+if(rt==='Occupancy'){const days=Math.max(1,nts(f,to));body=tbl(['Room type','Rooms','Booked nights','Occupancy'],T.map(t=>{const n=R.filter(r=>r.t===t.id).length,bn=l.filter(b=>act(b)&&b.t===t.id).reduce((s,b)=>s+b.u.length*Math.max(0,nts(b.ci<f?f:b.ci,b.co>to?to:b.co)),0);return[t.n,n,bn,Math.min(100,Math.round(bn/((n*days)||1)*100))+'%']}))}
+else if(rt==='Revenue'){const p=l.filter(paid);body=tbl(['ID','Guest','Room','Amount'],p.map(b=>[b.id,esc(b.cust),rn(b),peso(b.total)]),'No paid bookings.')+`<div class="pr t"><span>Total revenue</span><span>${peso(p.reduce((s,b)=>s+b.total,0))}</span></div>`}
+else if(rt==='Payment')body=tbl(['ID','Guest','Amount','Method','Payment','Reference'],l.map(b=>[b.id,esc(b.cust),peso(b.total),b.ref?'GCash':'Cash',bs(b.pay),esc(b.ref||'—')]),'No transactions.');
+else if(rt==='Cancellation')body=tbl(['ID','Guest','Room','Total','Refund'],l.filter(b=>b.status==='Cancelled').map(b=>[b.id,esc(b.cust),rn(b),peso(b.total),b.refund||'—']),'No cancellations.');
+else body=tbl(['ID','Guest','Room','Check-in','Check-out','Status'],l.map(b=>[b.id,esc(b.cust),rn(b),fd(b.ci),fd(b.co),bs(b.status)]),'No bookings.');
+return`<h1>📈 Reports</h1><div class="row np" style="margin:12px 0"><select style="max-width:190px" onchange="S.rt=this.value;render()">${['Booking','Occupancy','Revenue','Payment','Cancellation'].map(x=>`<option value="${x}"${rt===x?' selected':''}>${x} report</option>`).join('')}</select><input type="date" style="max-width:150px" value="${f}" onchange="S.rf=this.value;render()"><input type="date" style="max-width:150px" value="${to}" onchange="S.rto=this.value;render()"><button class="btn s o" onclick="print()">🖨️ Print</button></div><div class="grid"><div class="card stat"><b>${l.length}</b><span>Bookings in range</span></div><div class="card stat"><b>${peso(l.filter(paid).reduce((s,b)=>s+b.total,0))}</b><span>Paid revenue</span></div><div class="card stat"><b>${l.filter(b=>b.status==='Cancelled').length}</b><span>Cancellations</span></div></div><h2>${rt} report</h2><div class="card">${body}</div>`},
+staff(){const l=U.map((u,i)=>[u,i]).filter(([u])=>u.r==='Staff'),P4=['Payments','Walk-in','Rooms','Reports'];return`<h1>🧑‍💼 Staff Management</h1><div class="card" style="margin:12px 0">${tbl(['Name','Email','Status','Permissions','Actions'],l.map(([u,i])=>[esc(u.n),esc(u.e),st(u.a?'ok':'no',u.a?'Active':'Inactive'),P4.map(p=>`<label style="text-transform:none;display:inline-flex;gap:4px;margin-right:8px"><input type="checkbox" style="width:auto" ${!u.perm||u.perm.includes(p)?'checked':''} onchange="tglPerm(${i},'${p}')">${p}</label>`).join(''),`<button class="btn s o" onclick="U[${i}].a=!U[${i}].a;log('Toggled staff');render()">${u.a?'Deactivate':'Activate'}</button>`]),'No staff yet.')}</div><div class="card row"><input id="sn2" placeholder="Name" style="max-width:170px"><input id="se2" placeholder="Email" style="max-width:200px"><button class="btn" onclick="addStaff()">+ Add staff</button></div><p class="mu" style="margin-top:8px">New staff password: demo1234</p>`},
+users(){return`<h1>👥 User Management</h1><div class="card" style="margin:12px 0">${tbl(['Name','Email','Role','Status','Created','Actions'],U.map((u,i)=>[esc(u.n),esc(u.e),`<select onchange="U[${i}].r=this.value;log('Role of ${esc(u.n)} → '+this.value)">${['Customer','Staff','Admin'].map(r=>`<option${u.r==r?' selected':''}>${r}</option>`).join('')}</select>`,st(u.a?'ok':'no',u.a?'Active':'Inactive'),u.c,`<button class="btn s o" onclick="U[${i}].a=!U[${i}].a;log('Toggled ${esc(u.n)}');render()">${u.a?'Deactivate':'Activate'}</button> <button class="btn s r" onclick="U.splice(${i},1);log('Deleted user');render()">Delete</button>`]))}</div><div class="card row"><input id="un" placeholder="Name" style="max-width:170px"><input id="ue" placeholder="Email" style="max-width:200px"><select id="ur" style="max-width:130px"><option>Customer</option><option>Staff</option><option>Admin</option></select><button class="btn" onclick="if(!$('#un').value||!$('#ue').value.includes('@'))return toast('⚠️ Name and valid email required');U.push({n:$('#un').value,e:$('#ue').value.toLowerCase(),r:$('#ur').value,a:1,pw:'demo1234',c:TD});log('Added user '+$('#un').value);render()">+ Add user</button></div>`},
+types(){return`<h1>🛏️ Room Types</h1><div class="grid" style="margin-top:12px">${T.map((t,i)=>`<div class="card"><h3>${t.e} ${t.n}</h3><div class="f"><label>Price / night</label><input type="number" value="${t.p}" onchange="T[${i}].p=+this.value;log('Price of ${t.n} set to '+this.value);toast('Saved')"></div><div class="f"><label>Capacity</label><input type="number" value="${t.cap}" onchange="T[${i}].cap=+this.value;toast('Saved')"></div><div class="f"><label>Description</label><textarea rows="2" onchange="T[${i}].d=this.value;toast('Saved')">${esc(t.d)}</textarea></div><div class="f"><label>Amenities (comma-separated)</label><input value="${esc(t.am.join(', '))}" onchange="T[${i}].am=this.value.split(',').map(x=>x.trim()).filter(Boolean);toast('Saved')"></div></div>`).join('')}</div><div class="card row" style="margin-top:14px"><input id="tn" placeholder="New room type" style="max-width:180px"><input id="tpp" type="number" placeholder="₱ / night" style="max-width:120px"><input id="tc" type="number" placeholder="Capacity" style="max-width:110px"><button class="btn" onclick="addType()">+ Add room type</button></div>`},
+price(){return`<h1>💵 Dynamic Pricing</h1><p class="mu" style="margin:6px 0 12px">Suggested rates based on today's occupancy and demand. You stay in control.</p><div class="card">${tbl(['Room type','Current','Occupancy','Demand','Suggested','Actions'],T.map((t,i)=>{const o=occ(t.id),s=Math.round(t.p*(o>.7?1.12:o<.3?.92:1)/50)*50;return[t.n,peso(t.p),Math.round(o*100)+'%',o>.7?st('no','High'):o<.3?st('','Low'):st('wa','Normal'),peso(s),`<button class="btn s g" onclick="T[${i}].p=${s};log('Accepted ${peso(s)} for ${t.n}');toast('Rate updated');render()">Accept</button> <button class="btn s o" onclick="toast('Suggestion rejected')">Reject</button> <input type="number" style="width:90px;padding:5px" placeholder="Manual" onchange="T[${i}].p=+this.value;log('Manual rate for ${t.n}');render()">`]}))}</div>`},
+promos(){return`<h1>🏷️ Promotions</h1><div class="card" style="margin:12px 0">${tbl(['Code','Discount','Rooms','Start','End','Status','Actions'],P.map((p,i)=>[p.c,p.pc+'%',p.rt&&p.rt!=='all'?T.find(x=>x.id===p.rt).n:'All rooms',p.s,p.e,st(p.on?'ok':'no',p.on?'Active':'Off'),`<button class="btn s o" onclick="P[${i}].on=!P[${i}].on;render()">${p.on?'Deactivate':'Activate'}</button> <button class="btn s r" onclick="P.splice(${i},1);render()">Delete</button>`]))}</div><div class="card row"><input id="pcode" placeholder="CODE" style="max-width:140px"><input id="ppc" type="number" placeholder="%" style="max-width:80px"><select id="prt" style="max-width:170px"><option value="all">All rooms</option>${T.map(t=>`<option value="${t.id}">${t.n}</option>`).join('')}</select><input type="date" id="ps" style="max-width:150px" value="${TD}"><input type="date" id="pe" style="max-width:150px" value="${iso(90)}"><button class="btn" onclick="if(!$('#pcode').value||!+$('#ppc').value)return toast('⚠️ Code and % required');P.push({c:$('#pcode').value.toUpperCase(),pc:+$('#ppc').value,rt:$('#prt').value,on:1,s:$('#ps').value,e:$('#pe').value});log('Added promo');render()">+ Add promo</button></div>`},
+hotel(){return`<h1>🏨 Hotel Information</h1><div class="card" style="max-width:560px;margin-top:12px">${[['name','Hotel name'],['desc','Description'],['addr','Address'],['phone','Contact'],['email','Email'],['pol','Policies'],['am','Amenities (emoji + name, comma-separated)']].map(f=>`<div class="f"><label>${f[1]}</label><input value="${esc(H[f[0]])}" onchange="H.${f[0]}=this.value"></div>`).join('')}<button class="btn" onclick="log('Hotel info updated');toast('✅ Saved')">Save</button></div>`},
+sets(){return`<h1>⚙️ System Settings</h1><div class="card" style="max-width:560px;margin-top:12px"><div class="f"><label>Free cancellation (hours before check-in)</label><input type="number" value="${ST.cancelHrs}" onchange="ST.cancelHrs=+this.value"></div><div class="f"><label>GCash number</label><input value="${esc(ST.gcashNo)}" onchange="ST.gcashNo=this.value"></div><div class="f"><label>GCash account name</label><input value="${esc(ST.gcashName)}" onchange="ST.gcashName=this.value"></div><div class="f"><label>Tax / service fee (%)</label><input type="number" value="${ST.tax}" onchange="ST.tax=+this.value"></div><div class="row sp f"><span>Email notifications</span><div class="sw ${ST.notif?'on':''}" onclick="ST.notif=!ST.notif;render()"></div></div><button class="btn" onclick="log('Settings updated');toast('✅ Saved')">Save settings</button></div>`},
+audit(){return`<h1>📝 Audit Logs</h1><div class="card" style="margin-top:12px">${tbl(['Who','Action','When'],LOG.map(l=>[esc(l.w),esc(l.m),l.t]),'No activity recorded yet.')}</div>`}};
+function rc(l,b,g){const x=l.find(y=>y.t.id===b.pref)||l.slice().sort((p,q)=>(p.t.cap-g)-(q.t.cap-g)||p.t.p-q.t.p)[0];return`<div class="card" style="margin-top:12px;border-color:var(--sea)"><span class="tag ok">★ Recommended for you</span> <b>${x.t.e} ${x.t.n}</b><p class="mu">Best suited for ${g} guest${g>1?'s':''} based on capacity, price and amenities.${b.pref===x.t.id?' Matches your room preference.':''}</p><button class="btn s" onclick="S.bk.t='${x.t.id}';go('guest')">Select this room</button></div>`}
+function resub(id){M(`<h3>Resubmit payment · ${id}</h3><div class="f" style="margin-top:10px"><label>GCash reference number</label><input id="rr2"></div><div class="f"><label>Proof of payment</label><input type="file" id="rp2" accept="image/*"></div><div id="re2" class="err"></div><div class="row"><button class="btn o" onclick="closeM()">Back</button><button class="btn" onclick="doResub('${id}')">Submit</button></div>`)}
+function doResub(id){const b=B.find(x=>x.id===id),r=$('#rr2').value.trim(),f=$('#rp2').files[0];if(r.length<6||!f)return $('#re2').textContent='Enter a reference number and upload proof.';b.ref=r;b.proof=f.name;b.pay='Pending';b.rej='';notify('Staff','🔁 Payment resubmitted for '+id);log('Resubmitted payment '+id);closeM();toast('Payment resubmitted');render()}
+function payCo(id){const b=B.find(x=>x.id===id);M(`<h3>Outstanding balance</h3><p style="margin:8px 0"><b>${peso(b.total)}</b> is unpaid for ${id}.</p><div class="f"><label>Payment method</label><select id="cm"><option>Cash</option><option>GCash</option><option>Card</option></select></div><div class="row"><button class="btn o" onclick="closeM()">Back</button><button class="btn g" onclick="closeM();setSt('${id}','Checked-out',1)">Collect &amp; Check-out</button></div>`)}
+function editB(id){const b=B.find(x=>x.id===id);M(`<h3>Edit ${id}</h3><div class="row" style="margin:10px 0"><div style="flex:1"><label>Check-in</label><input type="date" id="ei" value="${b.ci}"></div><div style="flex:1"><label>Check-out</label><input type="date" id="eo" value="${b.co}"></div></div><div class="f"><label>Guests</label><input type="number" id="eg" min="1" value="${b.ad+b.ch}"></div><div class="f"><label>Special requests</label><textarea id="er" rows="2">${esc(b.req||'')}</textarea></div><div id="ee" class="err"></div><div class="row"><button class="btn o" onclick="closeM()">Back</button><button class="btn" onclick="saveB('${id}')">Save</button></div>`)}
+function saveB(id){const b=B.find(x=>x.id===id),ci=$('#ei').value,co=$('#eo').value,g=+$('#eg').value,e=$('#ee');if(!ci||nts(ci,co)<1)return e.textContent='Check-out must be after check-in.';if(g<1||g>T.find(x=>x.id===b.t).cap*b.rooms)return e.textContent='Guests exceed room capacity.';if(b.u.some(n=>B.some(o=>o!==b&&act(o)&&o.u.includes(n)&&o.ci<co&&o.co>ci)))return e.textContent='❌ Room not available for those dates.';b.ci=ci;b.co=co;b.ad=g;b.ch=0;b.req=$('#er').value;b.total=price(b.t,ci,co,b.rooms).tot;notify('Customer','✏️ Booking '+id+' was updated by staff.');log('Edited '+id);closeM();toast('✅ Booking updated');render()}
+function tglPerm(i,p){const u=U[i];u.perm=u.perm||['Payments','Walk-in','Rooms','Reports'];u.perm=u.perm.includes(p)?u.perm.filter(x=>x!==p):u.perm.concat(p);log('Permissions for '+u.n+': '+u.perm.join(', '));toast('Permissions saved')}
+function addStaff(){const n=$('#sn2').value.trim(),e=$('#se2').value.trim().toLowerCase();if(!n||!e.includes('@')||U.some(x=>x.e===e))return toast('⚠️ Name and unique email required');U.push({n,e,r:'Staff',a:1,pw:'demo1234',c:TD});log('Added staff '+n);render()}
+function addType(){const n=$('#tn').value.trim(),p=+$('#tpp').value,c=+$('#tc').value;if(!n||!p||!c)return toast('⚠️ Name, price and capacity required');T.push({id:'t'+Date.now(),n,p,cap:c,bed:'—',e:'🛏️',am:['Aircon','Wi-Fi'],d:'New room type.'});log('Added room type '+n);render()}
+function brief(){const b=S.bk,t=T.find(x=>x.id===b.t);return t?`<h3>${t.e} ${t.n}</h3><p class="mu">${fd(b.ci)} → ${fd(b.co)} · ${nts(b.ci,b.co)} nights · ${b.ad+b.ch} guests · ${b.rooms} room(s)</p>`:''}
+function occ(t){const n=R.filter(r=>r.t===t&&r.st!=='Maintenance').length;return n?B.filter(b=>act(b)&&b.t===t&&b.ci<=TD&&b.co>TD).reduce((s,b)=>s+b.u.length,0)/n:0}
+function occBars(){return`<div class="card">${T.map(t=>{const o=occ(t.id);return`<div class="row" style="margin:6px 0"><span style="width:130px;font-size:13px">${t.n}</span><div class="bar" style="flex:1"><i style="width:${o*100}%"></i></div><b>${Math.round(o*100)}%</b></div>`}).join('')}</div>`}
+function stats(){const s=[['Today\'s bookings',B.filter(b=>b.ts.startsWith(new Date().toLocaleDateString('en-PH'))).length],['Check-ins today',B.filter(b=>b.status==='Confirmed'&&b.ci<=TD).length],['Check-outs today',B.filter(b=>b.status==='Checked-in').length],['Upcoming',B.filter(b=>b.status==='Confirmed'&&b.ci>TD).length],['Pending payments',B.filter(b=>b.pay==='Pending').length],['Available rooms',R.filter(r=>r.st==='Available'&&!B.some(b=>b.status==='Checked-in'&&b.u.includes(r.no))).length],['Occupied rooms',B.filter(b=>b.status==='Checked-in').reduce((s,b)=>s+b.u.length,0)],['Cancelled',B.filter(b=>b.status==='Cancelled').length]];return`<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));margin-top:12px">${s.map(x=>`<div class="card stat"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('')}</div>`}
+function gNext(){const b=S.bk;b.name=$('#gn').value.trim();b.email=$('#ge').value.trim();b.phone=$('#gp').value.trim();b.addr=$('#ga').value.trim();b.req=$('#gr').value.trim();const e=$('#ger');
+if(!b.name||!b.email.includes('@')||b.phone.length<7){e.textContent='Please enter your name, a valid email and contact number.';return}
+const t=T.find(x=>x.id===b.t);if(b.ad+b.ch>t.cap*b.rooms){e.textContent='Room capacity is '+t.cap+' guests per room.';return}go('summary')}
+function applyPromo(){const c=$('#pc').value.trim().toUpperCase(),p=P.find(x=>x.c===c&&x.on&&x.s<=TD&&x.e>=TD&&(!x.rt||x.rt==='all'||x.rt===S.bk.t));if(!p){S.bk.promo='';S.bk.pc=0;toast('❌ Invalid or expired promo');return render()}S.bk.promo=c;S.bk.pc=p.pc;toast('🎉 '+c+' applied');render()}
+function submitPay(){const b=S.bk,rf=$('#rf').value.trim(),f=$('#pf').files[0],e=$('#per');if(rf.length<6){e.textContent='Enter a valid GCash reference number.';return}if(!f){e.textContent='Please upload proof of payment.';return}
+const tot=price(b.t,b.ci,b.co,b.rooms,b.pc||0).tot,r=mk({cust:b.name,email:b.email,phone:b.phone,addr:b.addr,req:b.req,t:b.t,ci:b.ci,co:b.co,ad:b.ad,ch:b.ch,rooms:b.rooms,total:tot,src:'Online',ref:rf,proof:f.name});
+if(!r){M(`<h2>😔 Room no longer available</h2><p>Someone just booked the last room for those dates. Your payment was not recorded.</p><div class="row" style="margin-top:14px"><button class="btn" onclick="go('avail')">Choose another room</button></div>`);return}
+notify('Customer','📩 Booking '+r.id+' submitted. Payment awaiting verification.');notify('Staff','🆕 New booking '+r.id+' with payment to verify.');notify('Admin','🆕 New booking '+r.id+'.');S.bk={ci:iso(1),co:iso(3),ad:2,ch:0,rooms:1,t:''};go('confirm',r.id)}
+function approve(id){const b=B.find(x=>x.id===id);b.pay='Approved';b.status='Confirmed';notify('Customer','✅ Payment approved — booking '+id+' confirmed!');log('Approved payment for '+id);toast('✅ '+id+' confirmed');render()}
+function rejM(id){M(`<h3>Reject payment ${id}</h3><div class="f" style="margin-top:10px"><label>Reason</label><input id="rr" placeholder="e.g. Amount mismatch"></div><div class="row"><button class="btn o" onclick="closeM()">Back</button><button class="btn r" onclick="const b=B.find(x=>x.id==='${id}');b.pay='Rejected';b.rej=$('#rr').value||'no reason';notify('Customer','❌ Payment rejected for ${id}: '+b.rej+'. Please resubmit your payment.');log('Rejected payment ${id}');closeM();render()">Reject</button></div>`)}
+function askCancel(id){const b=B.find(x=>x.id===id);M(`<h3>Cancel booking?</h3><p style="margin:8px 0">Are you sure you want to cancel <b>${id}</b>?</p><p class="mu">Policy: free cancellation up to ${ST.cancelHrs} hrs before check-in. Refund: ${b.pay==='Approved'?peso(b.total)+' (to GCash within 3–5 days)':'none — unpaid'}.</p><div class="row" style="margin-top:14px"><button class="btn o" onclick="closeM()">Keep Booking</button><button class="btn r" onclick="doCancel('${id}')">Confirm Cancellation</button></div>`)}
+function doCancel(id){const b=B.find(x=>x.id===id);b.refund=['Approved','Paid'].includes(b.pay)?'Refund pending':'No payment to refund';b.status='Cancelled';notify('Customer','🗑️ Booking '+id+' cancelled. Room released. '+b.refund+'.');notify('Staff','⚠️ Cancellation: '+id);log('Cancelled '+id);closeM();toast('Booking cancelled');render()}
+function staffCancel(id){askCancel(id)}
+function setSt(id,s,paid){const b=B.find(x=>x.id===id);if(s==='Checked-out'&&!paid&&!['Approved','Paid'].includes(b.pay))return payCo(id);b.status=s;if(s==='Checked-out')b.pay='Paid';notify('Customer',(s==='Checked-in'?'🛎️ Checked in: ':'🚪 Checked out: ')+id);log(s+' '+id);toast('✅ '+s);render()}
+function bdet(id){const b=B.find(x=>x.id===id);M(`<h3>${b.id} ${bs(b.status)}</h3><div style="margin:10px 0">${[['Customer',esc(b.cust)],['Email',esc(b.email)],['Phone',esc(b.phone)],['Room',T.find(x=>x.id===b.t).n+' ('+b.u.join(', ')+')'],['Dates',fd(b.ci)+' → '+fd(b.co)],['Payment',bs(b.pay)],['Reference',esc(b.ref||'—')],['Proof',esc(b.proof||'—')],['Total',peso(b.total)],['Requests',esc(b.req||'—')]].map(r=>`<div class="pr"><span class="mu">${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div><button class="btn" onclick="closeM()">Close</button>`)}
+function doWalk(){const e=$('#wer'),n=$('#wn').value.trim(),c=$('#wc').value.trim(),ci=$('#wi').value,co=$('#wo').value,t=$('#wt').value,g=+$('#wg').value;
+if(!n||!c)return e.textContent='Name and contact are required.';if(!ci||nts(ci,co)<1)return e.textContent='Check dates are invalid.';if(g>T.find(x=>x.id===t).cap)return e.textContent='Exceeds room capacity.';
+const b=mk({cust:n,email:c,phone:c,t,ci,co,ad:g,ch:0,rooms:1,total:price(t,ci,co).tot,pay:'Paid',status:ci<=TD?'Checked-in':'Confirmed',src:'Walk-in'});if(!b)return e.textContent='❌ No room available for those dates.';
+log('Walk-in booking '+b.id);notify('Admin','🚶 Walk-in '+b.id);toast('✅ '+b.id+' · Room '+b.u[0]+' reserved');go('sbook')}
+function recommend(){const g=+$('#rg').value,n=+$('#rn').value,bd=+$('#rb').value,pr=[...document.querySelectorAll('.rp:checked')].map(x=>x.value);
+const sc=T.map(t=>{let s=0,w=[];if(t.cap>=g){s+=50;w.push('fits '+g+' guests')}if(t.p<=bd){s+=30;w.push('within budget')}if(t.cap>=g&&t.cap-g<=1)s+=10;pr.forEach(p=>{if(t.am.some(a=>a.includes(p.replace('view','view')))){s+=8;w.push('has '+p.toLowerCase())}});if(n>=4&&t.cap>=g)s+=5;return{t,s,w}}).sort((a,b)=>b.s-a.s),top=sc[0];
+S.recR=`<div class="card" style="border-color:var(--sea)"><span class="tag ok">★ Recommended for you</span><h2 style="margin-top:6px">${top.t.e} ${top.t.n}</h2><p>${peso(top.t.p)}/night · ${peso(top.t.p*n)} for ${n} nights</p><p class="mu">Why: ${top.w.join(', ')||'closest match'}.</p><p style="margin:8px 0">${top.t.am.map(a=>st('',a)).join('')}</p><button class="btn" onclick="pick('${top.t.id}')">Book this room</button></div><h3 style="margin:12px 0 6px">Alternatives</h3>${sc.slice(1,3).map(x=>`<div class="card" style="margin-bottom:8px"><b>${x.t.n}</b> · ${peso(x.t.p)}/night<br><span class="mu">${x.t.cap>=g?'Also fits your group':'Smaller than your group'}</span></div>`).join('')}`;render()}
+function doLogin(){const e=$('#le').value.trim().toLowerCase(),p=$('#lp').value;if(!e.includes('@')||!p){$('#lerr').textContent='Enter your email and password.';return}const u=U.find(x=>x.e===e);if(!u||u.pw!==p){$('#lerr').textContent='Invalid email or password. Please try again.';return}quick(e)}
+function quick(e){const r=e.includes('admin')?'Admin':e.includes('staff')?'Staff':'Customer';let u=U.find(x=>x.e===e);if(!u){u={n:e.split('@')[0],e,r,a:1,c:TD};U.push(u)}if(!u.a){toast('⛔ Account deactivated');return}S.role=u.r==='Customer'?'Customer':u.r;S.user=u;log('Logged in');toast('👋 Welcome, '+u.n);go(S.role==='Admin'?'adash':S.role==='Staff'?'sdash':'home')}
+function doSignup(){const g=i=>$('#'+i).value.trim(),e=$('#serr');if(!g('sn')||!g('se').includes('@')||g('sp').length<7)return e.textContent='Complete all fields with valid details.';if(!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(g('s1')))return e.textContent='Password needs 8+ characters with a letter and a number.';if(U.some(x=>x.e===g('se').toLowerCase()))return e.textContent='This email is already registered.';if(g('s1')!==g('s2'))return e.textContent='Passwords do not match.';if(!$('#st').checked)return e.textContent='Please accept the Terms & Conditions.';
+U.push({n:g('sn'),e:g('se').toLowerCase(),ph:g('sp'),r:'Customer',a:1,pw:g('s1'),c:TD});toast('🎉 Account created. Please log in.');go('login')}
+function saveProf(){const u=S.user;u.n=$('#pn').value;u.ph=$('#pph').value;u.ad=$('#pa').value;toast('✅ Profile saved');render()}
+function chPw(){if(!$('#p1').value||$('#p2').value.length<6)return toast('⚠️ Enter current & a 6+ char new password');if($('#p2').value!==$('#p3').value)return toast('⚠️ Passwords do not match');toast('✅ Password updated')}
+function runDemo(){const ci=$('#dd1').value,co=$('#dd2').value;if(!ci||nts(ci,co)<1)return toast('⚠️ Invalid dates');const box=$('#demo');box.innerHTML='<p class="mu">Both customers click “Confirm” at the same time…</p>';
+setTimeout(()=>{const mkb=n=>mk({cust:n,email:n.toLowerCase().replace(' ','')+'@mail.com',phone:'0917',t:'pre',ci,co,ad:2,ch:0,rooms:1,total:price('pre',ci,co).tot,src:'Online',ref:'DEMO123'});
+const a=mkb('Customer A'),b=mkb('Customer B');const row=(n,r)=>`<div class="card" style="margin-bottom:8px;border-color:${r?'var(--ok)':'var(--coral)'}"><b>${n}</b> — ${r?'✅ Booked room '+r.u[0]+' ('+r.id+')':'❌ Room no longer available.'}</div>`;
+box.innerHTML=`<p class="mu">System re-checks availability atomically before confirming:</p>${row('Customer A',a)}${row('Customer B',b)}<p><b>Result:</b> only ONE booking succeeded — no double booking.</p>`;log('Double-booking demo run')},900)}
+render();
+</script></body></html>
